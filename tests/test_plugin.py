@@ -31,7 +31,7 @@ def invalid_document():
 
 
 def run(g, outcome):
-    g.send(None)
+    next(g)
 
     with pytest.raises(StopIteration):
         g.send(outcome)
