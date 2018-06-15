@@ -3,3 +3,5 @@
 *.pyc
 .pytest_cache
 .ropeproject
+build
+dist
