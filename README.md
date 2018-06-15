@@ -2,7 +2,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/pyls-black.svg)](https://pypi.org/project/pyls-black/)
 
-> [Black](https://github.com/ambv/black) plugin for the [Python Language Server](https://github.com/palantir/python-language-server/tree/develop/pyls).
+> [Black](https://github.com/ambv/black) plugin for the [Python Language Server](https://github.com/palantir/python-language-server).
 
 ```shell
 pip3 install pyls-black
