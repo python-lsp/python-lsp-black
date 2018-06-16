@@ -10,7 +10,9 @@ jobs:
           python3 -m venv ~/venv
           . ~/venv/bin/activate
           pip install -e .[dev]
-      - run: make lint
+      - run: |
+          . ~/venv/bin/activate
+          make lint
 
   test:
     working_directory: ~/project
@@ -22,7 +24,9 @@ jobs:
           python3 -m venv ~/venv
           . ~/venv/bin/activate
           pip install -e .[dev]
-      - run: make test
+      - run: |
+          . ~/venv/bin/activate
+          make test
 
 workflows:
   version: 2
