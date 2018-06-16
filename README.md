@@ -1,6 +1,6 @@
 # pyls-black
 
-[![PyPI](https://img.shields.io/pypi/v/pyls-black.svg)](https://pypi.org/project/pyls-black/) [![CircleCI branch](https://img.shields.io/circleci/project/github/rupert/pyls-black/master.svg)](https://circleci.com/gh/rupert/pyls-black) ![Python 3.6](https://img.shields.io/badge/python-3.6-green.svg) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+[![PyPI](https://img.shields.io/pypi/v/pyls-black.svg)](https://pypi.org/project/pyls-black/) [![CircleCI branch](https://img.shields.io/circleci/project/github/rupert/pyls-black/master.svg)](https://circleci.com/gh/rupert/pyls-black) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyls-black.svg) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
 > [Black](https://github.com/ambv/black) plugin for the [Python Language Server](https://github.com/palantir/python-language-server).
 
