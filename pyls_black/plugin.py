@@ -71,7 +71,7 @@ def load_config(filename: str) -> Dict:
 
     try:
         pyproject_toml = toml.load(str(pyproject_filename))
-    except (toml.TomlDecodeError, OSError) as e:
+    except (toml.TomlDecodeError, OSError):
         return defaults
 
     config = pyproject_toml.get("tool", {}).get("black", {})
