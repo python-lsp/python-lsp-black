@@ -48,7 +48,6 @@ def format_text(*, text, config):
         pyi=config["pyi"],
         skip_string_normalization=config["skip_string_normalization"],
     )
-    print(line_length)
     return black.format_file_contents(
         text, line_length=line_length, fast=fast, mode=mode
     )
