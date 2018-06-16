@@ -1,59 +1,38 @@
-from typing import NamedTuple
-
 import black
 from pyls import hookimpl
 
 
-@hookimpl(hookwrapper=True)
+@hookimpl
 def pyls_format_document(document):
     return format_document(document)
 
 
-@hookimpl(hookwrapper=True)
+@hookimpl
 def pyls_format_range(document, range):
-    selection = Selection(start=range["start"]["line"], end=range["end"]["line"] + 1)
-    return format_document(document, selection)
+    range["start"]["character"] = 0
+    range["end"]["line"] += 1
+    range["end"]["character"] = 0
+    return format_document(document, range)
 
 
-class Selection(NamedTuple):
-    start: int
-    end: int
-
-    def to_range(self):
-        return {
-            "start": {"line": self.start, "character": 0},
-            "end": {"line": self.end, "character": 0},
-        }
-
-
-def format_document(document, selection=None):
-    outcome = yield
-
-    result = outcome.get_result()
-
-    if result:
-        text = result[0]["newText"]
+def format_document(document, range=None):
+    if range:
+        start = range["start"]["line"]
+        end = range["end"]["line"]
+        text = "".join(document.lines[start:end])
     else:
         text = document.source
-
-    if selection:
-        text = select_text(text, selection)
-    else:
-        selection = Selection(0, len(document.lines))
+        range = {
+            "start": {"line": 0, "character": 0},
+            "end": {"line": len(document.lines), "character": 0},
+        }
 
     try:
         formatted_text = format_text(text)
     except (ValueError, black.NothingChanged):
-        return
+        return []
 
-    new_result = [{"range": selection.to_range(), "newText": formatted_text}]
-
-    outcome.force_result(new_result)
-
-
-def select_text(text, selection):
-    lines = text.splitlines(True)
-    return "".join(lines[selection.start : selection.end])
+    return [{"range": range, "newText": formatted_text}]
 
 
 def format_text(text):

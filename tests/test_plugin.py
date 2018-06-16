@@ -30,79 +30,36 @@ def invalid_document():
     return Document(uri)
 
 
-def run(g, outcome):
-    next(g)
-
-    with pytest.raises(StopIteration):
-        g.send(outcome)
-
-
 def test_pyls_format_document(unformatted_document, formatted_document):
     mock = Mock()
     mock.get_result.return_value = None
 
-    g = pyls_format_document(unformatted_document)
-    run(g, mock)
+    result = pyls_format_document(unformatted_document)
 
-    mock.force_result.assert_called_once_with(
-        [
-            {
-                "range": {
-                    "start": {"line": 0, "character": 0},
-                    "end": {"line": 2, "character": 0},
-                },
-                "newText": formatted_document.source,
-            }
-        ]
-    )
-
-
-def test_pyls_format_document_with_result(unformatted_document):
-    mock = Mock()
-    mock.get_result.return_value = [
+    assert result == [
         {
             "range": {
                 "start": {"line": 0, "character": 0},
-                "end": {"line": 1, "character": 0},
+                "end": {"line": 2, "character": 0},
             },
-            "newText": "x = 1+2\n",
+            "newText": formatted_document.source,
         }
     ]
-
-    g = pyls_format_document(unformatted_document)
-    run(g, mock)
-
-    mock.force_result.assert_called_once_with(
-        [
-            {
-                "range": {
-                    "start": {"line": 0, "character": 0},
-                    "end": {"line": 2, "character": 0},
-                },
-                "newText": "x = 1 + 2\n",
-            }
-        ]
-    )
 
 
 def test_pyls_format_document_unchanged(formatted_document):
     mock = Mock()
     mock.get_result.return_value = None
 
-    g = pyls_format_document(formatted_document)
-    run(g, mock)
+    result = pyls_format_document(formatted_document)
 
-    mock.force_result.assert_not_called()
+    assert result == []
 
 
-def test_pyls_format_document_supresses_syntax_errors(invalid_document):
-    mock = Mock()
-    mock.get_result.return_value = None
+def test_pyls_format_document_syntax_error(invalid_document):
+    result = pyls_format_document(invalid_document)
 
-    g = pyls_format_document(invalid_document)
-    run(g, mock)
-
-    mock.force_result.assert_not_called()
+    assert result == []
 
 
 @pytest.mark.parametrize(
@@ -115,62 +72,30 @@ def test_pyls_format_range(unformatted_document, start, end, expected):
         "end": {"line": end, "character": 0},
     }
 
-    mock = Mock()
-    mock.get_result.return_value = None
+    result = pyls_format_range(unformatted_document, range=range)
 
-    g = pyls_format_range(unformatted_document, range=range)
-    run(g, mock)
-
-    mock.force_result.assert_called_once_with(
-        [
-            {
-                "range": {
-                    "start": {"line": start, "character": 0},
-                    "end": {"line": end + 1, "character": 0},
-                },
-                "newText": expected,
-            }
-        ]
-    )
-
-
-def test_pyls_format_range_with_result(unformatted_document):
-    range = {"start": {"line": 0, "character": 0}, "end": {"line": 0, "character": 0}}
-
-    mock = Mock()
-    mock.get_result.return_value = [
+    assert result == [
         {
             "range": {
-                "start": {"line": 0, "character": 0},
-                "end": {"line": 2, "character": 0},
+                "start": {"line": start, "character": 0},
+                "end": {"line": end + 1, "character": 0},
             },
-            "newText": "x = 1+2\ny = 3+4\n",
+            "newText": expected,
         }
     ]
-
-    g = pyls_format_range(unformatted_document, range=range)
-    run(g, mock)
-
-    mock.force_result.assert_called_once_with(
-        [
-            {
-                "range": {
-                    "start": {"line": 0, "character": 0},
-                    "end": {"line": 1, "character": 0},
-                },
-                "newText": "x = 1 + 2\n",
-            }
-        ]
-    )
 
 
 def test_pyls_format_range_unchanged(formatted_document):
     range = {"start": {"line": 0, "character": 0}, "end": {"line": 1, "character": 0}}
 
-    mock = Mock()
-    mock.get_result.return_value = None
+    result = pyls_format_range(formatted_document, range=range)
 
-    g = pyls_format_range(formatted_document, range=range)
-    run(g, mock)
+    assert result == []
 
-    mock.force_result.assert_not_called()
+
+def test_pyls_format_range_syntax_error(invalid_document):
+    range = {"start": {"line": 0, "character": 0}, "end": {"line": 1, "character": 0}}
+
+    result = pyls_format_range(invalid_document, range=range)
+
+    assert result == []
