@@ -1,0 +1,32 @@
+version: 2
+jobs:
+  unit tests:
+    working_directory: ~/project
+    docker:
+      - image: circleci/python:3.6.5-stretch
+    steps:
+      - checkout
+      - run: |
+          python3 -m venv ~/venv
+          . ~/venv/bin/activate
+          pip install -e[dev]
+      - run: make lint
+
+  test:
+    working_directory: ~/project
+    docker:
+      - image: circleci/python:3.6.5-stretch
+    steps:
+      - checkout
+      - run: |
+          python3 -m venv ~/venv
+          . ~/venv/bin/activate
+          pip install -e[dev]
+      - run: make test
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - lint
+      - test

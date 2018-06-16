@@ -18,6 +18,9 @@ isort-check:
 mypy:
 	mypy .
 
+test:
+	pytest -v .
+
 build:
 	python3 setup.py sdist bdist_wheel
 
