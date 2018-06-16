@@ -1,4 +1,7 @@
+from typing import Dict
+
 import black
+import toml
 from pyls import hookimpl
 
 
@@ -27,13 +30,54 @@ def format_document(document, range=None):
             "end": {"line": len(document.lines), "character": 0},
         }
 
+    config = load_config(document.path)
+
     try:
-        formatted_text = format_text(text)
+        formatted_text = format_text(text=text, config=config)
     except (ValueError, black.NothingChanged):
         return []
 
     return [{"range": range, "newText": formatted_text}]
 
 
-def format_text(text):
-    return black.format_file_contents(text, line_length=88, fast=False)
+def format_text(*, text, config):
+    line_length = config["line_length"]
+    fast = config["fast"]
+    mode = black.FileMode.from_configuration(
+        py36=config["py36"],
+        pyi=config["pyi"],
+        skip_string_normalization=config["skip_string_normalization"],
+    )
+    print(line_length)
+    return black.format_file_contents(
+        text, line_length=line_length, fast=fast, mode=mode
+    )
+
+
+def load_config(filename: str) -> Dict:
+    defaults = {
+        "line_length": 88,
+        "fast": False,
+        "py36": False,
+        "pyi": False,
+        "skip_string_normalization": False,
+    }
+
+    root = black.find_project_root((filename,))
+
+    pyproject_filename = root / "pyproject.toml"
+
+    if not pyproject_filename.is_file():
+        return defaults
+
+    try:
+        pyproject_toml = toml.load(str(pyproject_filename))
+    except (toml.TomlDecodeError, OSError) as e:
+        return defaults
+
+    config = pyproject_toml.get("tool", {}).get("black", {})
+    config = {
+        key.replace("--", "").replace("-", "_"): value for key, value in config.items()
+    }
+
+    return {**defaults, **config}

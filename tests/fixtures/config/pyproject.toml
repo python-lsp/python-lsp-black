@@ -1,0 +1,6 @@
+[tool.black]
+line-length = 20
+--fast = true
+py36 = true
+pyi = true
+skip-string-normalization = true

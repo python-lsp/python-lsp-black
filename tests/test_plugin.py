@@ -1,39 +1,43 @@
 from pathlib import Path
-from unittest.mock import Mock
 
 import pytest
 from pyls.workspace import Document
 
-from pyls_black.plugin import pyls_format_document, pyls_format_range
+from pyls_black.plugin import load_config, pyls_format_document, pyls_format_range
 
 here = Path(__file__).parent
+fixtures_dir = here / "fixtures"
 
 
 @pytest.fixture
 def unformatted_document():
-    path = here / "unformatted.txt"
+    path = fixtures_dir / "unformatted.txt"
     uri = f"file:/{path}"
     return Document(uri)
 
 
 @pytest.fixture
 def formatted_document():
-    path = here / "formatted.txt"
+    path = fixtures_dir / "formatted.txt"
     uri = f"file:/{path}"
     return Document(uri)
 
 
 @pytest.fixture
 def invalid_document():
-    path = here / "invalid.txt"
+    path = fixtures_dir / "invalid.txt"
+    uri = f"file:/{path}"
+    return Document(uri)
+
+
+@pytest.fixture
+def config_document():
+    path = fixtures_dir / "config" / "config.txt"
     uri = f"file:/{path}"
     return Document(uri)
 
 
 def test_pyls_format_document(unformatted_document, formatted_document):
-    mock = Mock()
-    mock.get_result.return_value = None
-
     result = pyls_format_document(unformatted_document)
 
     assert result == [
@@ -48,9 +52,6 @@ def test_pyls_format_document(unformatted_document, formatted_document):
 
 
 def test_pyls_format_document_unchanged(formatted_document):
-    mock = Mock()
-    mock.get_result.return_value = None
-
     result = pyls_format_document(formatted_document)
 
     assert result == []
@@ -60,6 +61,28 @@ def test_pyls_format_document_syntax_error(invalid_document):
     result = pyls_format_document(invalid_document)
 
     assert result == []
+
+
+def test_pyls_format_document_with_config(config_document):
+    result = pyls_format_document(config_document)
+
+    assert result == [
+        {
+            "range": {
+                "start": {"line": 0, "character": 0},
+                "end": {"line": 1, "character": 0},
+            },
+            "newText": (
+                "run(\n"
+                "    these,\n"
+                "    arguments,\n"
+                "    should,\n"
+                "    be,\n"
+                "    wrapped,\n"
+                ")\n"
+            ),
+        }
+    ]
 
 
 @pytest.mark.parametrize(
@@ -99,3 +122,27 @@ def test_pyls_format_range_syntax_error(invalid_document):
     result = pyls_format_range(invalid_document, range=range)
 
     assert result == []
+
+
+def test_load_config():
+    config = load_config(fixtures_dir / "config" / "example.py")
+
+    assert config == {
+        "line_length": 20,
+        "py36": True,
+        "pyi": True,
+        "fast": True,
+        "skip_string_normalization": True,
+    }
+
+
+def test_load_config_defaults():
+    config = load_config(fixtures_dir / "example.py")
+
+    assert config == {
+        "line_length": 88,
+        "py36": False,
+        "pyi": False,
+        "fast": False,
+        "skip_string_normalization": False,
+    }
