@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  unit tests:
+  lint:
     working_directory: ~/project
     docker:
       - image: circleci/python:3.6.5-stretch
