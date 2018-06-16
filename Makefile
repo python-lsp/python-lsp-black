@@ -1,4 +1,4 @@
-lint: flake8 black-check isort-check
+lint: flake8 black-check isort-check mypy
 
 flake8:
 	flake8 .
@@ -21,7 +21,7 @@ mypy:
 test:
 	pytest -v .
 
-build:
+build: lint test
 	python3 setup.py sdist bdist_wheel
 
 test-upload:
