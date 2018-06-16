@@ -9,7 +9,7 @@ jobs:
       - run: |
           python3 -m venv ~/venv
           . ~/venv/bin/activate
-          pip install -e[dev]
+          pip install -e .[dev]
       - run: make lint
 
   test:
@@ -21,7 +21,7 @@ jobs:
       - run: |
           python3 -m venv ~/venv
           . ~/venv/bin/activate
-          pip install -e[dev]
+          pip install -e .[dev]
       - run: make test
 
 workflows:
