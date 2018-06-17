@@ -4,9 +4,13 @@
 
 > [Black](https://github.com/ambv/black) plugin for the [Python Language Server](https://github.com/palantir/python-language-server).
 
+In the same `virtualenv` as `python-language-server`:
+
 ```shell
 pip3 install pyls-black
 ```
+
+To avoid unexpected results you should make sure `yapf` and `autopep8` are not installed.
 
 * `pyls-black` can either format an entire file or just the selected text.
 * The code will only be formatted if it is syntactically valid Python.
