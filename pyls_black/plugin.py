@@ -5,12 +5,12 @@ import toml
 from pyls import hookimpl
 
 
-@hookimpl
+@hookimpl(tryfirst=True)
 def pyls_format_document(document):
     return format_document(document)
 
 
-@hookimpl
+@hookimpl(tryfirst=True)
 def pyls_format_range(document, range):
     range["start"]["character"] = 0
     range["end"]["line"] += 1
