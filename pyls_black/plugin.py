@@ -47,7 +47,9 @@ def format_text(*, text, config):
         py36=config["py36"],
         pyi=config["pyi"],
         skip_string_normalization=config["skip_string_normalization"],
-        skip_numeric_underscore_normalization=config["skip_numeric_underscore_normalization"],
+        skip_numeric_underscore_normalization=config[
+            "skip_numeric_underscore_normalization"
+        ],
     )
     return black.format_file_contents(
         text, line_length=line_length, fast=fast, mode=mode
