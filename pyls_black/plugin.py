@@ -34,7 +34,7 @@ def format_document(document, range=None):
 
     try:
         formatted_text = format_text(text=text, config=config)
-    except (ValueError, black.NothingChanged):
+    except (ValueError, black.NothingChanged, IndentationError, AssertionError):
         return []
 
     return [{"range": range, "newText": formatted_text}]
