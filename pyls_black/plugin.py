@@ -34,7 +34,16 @@ def format_document(document, range=None):
 
     try:
         formatted_text = format_text(text=text, config=config)
-    except (ValueError, black.NothingChanged, IndentationError, AssertionError):
+    except (
+        ValueError,
+        # raised when the file is already formatted correctly
+        black.NothingChanged,
+        # raised when the file being formatted has an indentation error
+        IndentationError,
+        # raised when black produces invalid Python code or formats the file
+        # differently on the second pass
+        AssertionError,
+    ):
         return []
 
     return [{"range": range, "newText": formatted_text}]
