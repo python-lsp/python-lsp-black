@@ -17,3 +17,5 @@ To avoid unexpected results you should make sure `yapf` and `autopep8` are not i
 * Text selections are treated as if they were a separate Python file.
   Unfortunately this means you can't format an indented block of code.
 * `pyls-black` will use your project's [pyproject.toml](https://github.com/ambv/black#pyprojecttoml) if it has one.
+
+See the [wiki](https://github.com/rupert/pyls-black/wiki) for instructions on how to use `pyls-black` with popular text editors.
