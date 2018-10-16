@@ -34,7 +34,7 @@ def format_document(document, range=None):
 
     try:
         formatted_text = format_text(text=text, config=config)
-    except (ValueError, black.NothingChanged):
+    except (ValueError, black.NothingChanged, IndentationError, AssertionError):
         return []
 
     return [{"range": range, "newText": formatted_text}]
@@ -47,6 +47,9 @@ def format_text(*, text, config):
         py36=config["py36"],
         pyi=config["pyi"],
         skip_string_normalization=config["skip_string_normalization"],
+        skip_numeric_underscore_normalization=config[
+            "skip_numeric_underscore_normalization"
+        ],
     )
     return black.format_file_contents(
         text, line_length=line_length, fast=fast, mode=mode
@@ -60,6 +63,7 @@ def load_config(filename: str) -> Dict:
         "py36": False,
         "pyi": False,
         "skip_string_normalization": False,
+        "skip_numeric_underscore_normalization": False,
     }
 
     root = black.find_project_root((filename,))
