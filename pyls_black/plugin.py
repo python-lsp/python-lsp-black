@@ -70,7 +70,7 @@ def load_config(filename: str) -> Dict:
         "line_length": 88,
         "fast": False,
         "py36": False,
-        "pyi": False,
+        "pyi": filename.endswith(".pyi"),
         "skip_string_normalization": False,
         "skip_numeric_underscore_normalization": False,
     }
