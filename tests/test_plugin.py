@@ -17,8 +17,22 @@ def unformatted_document():
 
 
 @pytest.fixture
+def unformatted_pyi_document():
+    path = fixtures_dir / "unformatted.pyi"
+    uri = f"file:/{path}"
+    return Document(uri)
+
+
+@pytest.fixture
 def formatted_document():
     path = fixtures_dir / "formatted.txt"
+    uri = f"file:/{path}"
+    return Document(uri)
+
+
+@pytest.fixture
+def formatted_pyi_document():
+    path = fixtures_dir / "formatted.pyi"
     uri = f"file:/{path}"
     return Document(uri)
 
@@ -51,8 +65,28 @@ def test_pyls_format_document(unformatted_document, formatted_document):
     ]
 
 
+def test_pyls_format_pyi_document(unformatted_pyi_document, formatted_pyi_document):
+    result = pyls_format_document(unformatted_pyi_document)
+
+    assert result == [
+        {
+            "range": {
+                "start": {"line": 0, "character": 0},
+                "end": {"line": 5, "character": 0},
+            },
+            "newText": formatted_pyi_document.source,
+        }
+    ]
+
+
 def test_pyls_format_document_unchanged(formatted_document):
     result = pyls_format_document(formatted_document)
+
+    assert result == []
+
+
+def test_pyls_format_pyi_document_unchanged(formatted_pyi_document):
+    result = pyls_format_document(formatted_pyi_document)
 
     assert result == []
 
@@ -125,7 +159,7 @@ def test_pyls_format_range_syntax_error(invalid_document):
 
 
 def test_load_config():
-    config = load_config(fixtures_dir / "config" / "example.py")
+    config = load_config(str(fixtures_dir / "config" / "example.py"))
 
     assert config == {
         "line_length": 20,
@@ -138,7 +172,7 @@ def test_load_config():
 
 
 def test_load_config_defaults():
-    config = load_config(fixtures_dir / "example.py")
+    config = load_config(str(fixtures_dir / "example.py"))
 
     assert config == {
         "line_length": 88,
