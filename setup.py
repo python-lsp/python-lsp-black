@@ -13,7 +13,7 @@ setup(
     author="Rupert Bedford",
     author_email="rupert@rupertb.com",
     packages=find_packages(exclude=["tests"]),
-    install_requires=["python-language-server", "black>=18.9b0", "toml"],
+    install_requires=["python-language-server", "black==18.9b0", "toml"],
     extras_require={"dev": ["isort", "flake8", "pytest", "mypy", "pytest"]},
     entry_points={"pyls": ["pyls_black = pyls_black.plugin"]},
     classifiers=(
