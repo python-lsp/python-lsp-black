@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name="pyls-black",
-    version="0.4.0",
+    version="0.4.1",
     description="Black plugin for the Python Language Server",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -13,7 +13,7 @@ setup(
     author="Rupert Bedford",
     author_email="rupert@rupertb.com",
     packages=find_packages(exclude=["tests"]),
-    install_requires=["python-language-server", "black>=18.9b0", "toml"],
+    install_requires=["python-language-server", "black==18.9b0", "toml"],
     extras_require={"dev": ["isort", "flake8", "pytest", "mypy", "pytest"]},
     entry_points={"pyls": ["pyls_black = pyls_black.plugin"]},
     classifiers=(
