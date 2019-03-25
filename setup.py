@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name="pyls-black",
-    version="0.4.1",
+    version="0.4.2",
     description="Black plugin for the Python Language Server",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -19,6 +19,7 @@ setup(
     classifiers=(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ),
