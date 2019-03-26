@@ -66,6 +66,7 @@ def load_config(filename: str) -> Dict:
         "fast": False,
         "pyi": filename.endswith(".pyi"),
         "skip_string_normalization": False,
+        "target_version": set(),
     }
 
     root = black.find_project_root((filename,))
