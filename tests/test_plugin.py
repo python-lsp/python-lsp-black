@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import black
 import pytest
 from pyls.workspace import Document
 
@@ -161,14 +162,26 @@ def test_pyls_format_range_syntax_error(invalid_document):
 def test_load_config():
     config = load_config(str(fixtures_dir / "config" / "example.py"))
 
+    # TODO split into smaller tests
     assert config == {
         "line_length": 20,
-        "py36": True,
+        "target_version": set(),
         "pyi": True,
         "fast": True,
         "skip_string_normalization": True,
-        "skip_numeric_underscore_normalization": True,
     }
+
+
+def test_load_config_target_version():
+    config = load_config(str(fixtures_dir / "target_version" / "example.py"))
+
+    assert config["target_version"] == {black.TargetVersion.PY27}
+
+
+def test_load_config_py36():
+    config = load_config(str(fixtures_dir / "py36" / "example.py"))
+
+    assert config["target_version"] == black.PY36_VERSIONS
 
 
 def test_load_config_defaults():
@@ -176,9 +189,8 @@ def test_load_config_defaults():
 
     assert config == {
         "line_length": 88,
-        "py36": False,
+        "target_version": set(),
         "pyi": False,
         "fast": False,
         "skip_string_normalization": False,
-        "skip_numeric_underscore_normalization": False,
     }
