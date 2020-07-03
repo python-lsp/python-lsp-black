@@ -1,8 +1,10 @@
 from pathlib import Path
+from unittest.mock import Mock
 
 import black
 import pytest
-from pyls.workspace import Document
+from pyls import uris
+from pyls.workspace import Document, Workspace
 
 from pyls_black.plugin import load_config, pyls_format_document, pyls_format_range
 
@@ -11,45 +13,51 @@ fixtures_dir = here / "fixtures"
 
 
 @pytest.fixture
-def unformatted_document():
+def workspace(tmpdir):
+    """Return a workspace."""
+    return Workspace(uris.from_fs_path(str(tmpdir)), Mock())
+
+
+@pytest.fixture
+def unformatted_document(workspace):
     path = fixtures_dir / "unformatted.txt"
     uri = f"file:/{path}"
-    return Document(uri)
+    return Document(uri, workspace)
 
 
 @pytest.fixture
-def unformatted_pyi_document():
+def unformatted_pyi_document(workspace):
     path = fixtures_dir / "unformatted.pyi"
     uri = f"file:/{path}"
-    return Document(uri)
+    return Document(uri, workspace)
 
 
 @pytest.fixture
-def formatted_document():
+def formatted_document(workspace):
     path = fixtures_dir / "formatted.txt"
     uri = f"file:/{path}"
-    return Document(uri)
+    return Document(uri, workspace)
 
 
 @pytest.fixture
-def formatted_pyi_document():
+def formatted_pyi_document(workspace):
     path = fixtures_dir / "formatted.pyi"
     uri = f"file:/{path}"
-    return Document(uri)
+    return Document(uri, workspace)
 
 
 @pytest.fixture
-def invalid_document():
+def invalid_document(workspace):
     path = fixtures_dir / "invalid.txt"
     uri = f"file:/{path}"
-    return Document(uri)
+    return Document(uri, workspace)
 
 
 @pytest.fixture
-def config_document():
+def config_document(workspace):
     path = fixtures_dir / "config" / "config.txt"
     uri = f"file:/{path}"
-    return Document(uri)
+    return Document(uri, workspace)
 
 
 def test_pyls_format_document(unformatted_document, formatted_document):
