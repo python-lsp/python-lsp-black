@@ -1,7 +1,9 @@
+import types
 from pathlib import Path
 from unittest.mock import Mock
 
 import black
+import pkg_resources
 import pytest
 from pyls import uris
 from pyls.workspace import Document, Workspace
@@ -202,3 +204,13 @@ def test_load_config_defaults():
         "fast": False,
         "skip_string_normalization": False,
     }
+
+
+def test_entry_point():
+    distribution = pkg_resources.get_distribution("pyls-black")
+    entry_point = distribution.get_entry_info("pyls", "pyls_black")
+
+    assert entry_point is not None
+
+    module = entry_point.load()
+    assert isinstance(module, types.ModuleType)
