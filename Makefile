@@ -10,10 +10,10 @@ black-check:
 	black --diff --check .
 
 isort:
-	isort --recursive .
+	isort .
 
 isort-check:
-	isort --recursive --check-only .
+	isort --check-only .
 
 mypy:
 	mypy .
