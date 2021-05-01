@@ -5,8 +5,8 @@ from unittest.mock import Mock
 import black
 import pkg_resources
 import pytest
-from pyls import uris
-from pyls.workspace import Document, Workspace
+from pylsp import uris
+from pylsp.workspace import Document, Workspace
 
 from pyls_black.plugin import load_config, pyls_format_document, pyls_format_range
 
