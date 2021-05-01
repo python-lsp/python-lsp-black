@@ -2,16 +2,16 @@ from typing import Dict
 
 import black
 import toml
-from pyls import hookimpl
+from pylsp import hookimpl
 
 
 @hookimpl(tryfirst=True)
-def pyls_format_document(document):
+def pylsp_format_document(document):
     return format_document(document)
 
 
 @hookimpl(tryfirst=True)
-def pyls_format_range(document, range):
+def pylsp_format_range(document, range):
     range["start"]["character"] = 0
     range["end"]["line"] += 1
     range["end"]["character"] = 0
