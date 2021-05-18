@@ -1,17 +1,19 @@
 # Standard library imports
 import types
 from pathlib import Path
-import pkg_resources
 from unittest.mock import Mock
+
+# Third-party imports
+import black
+import pkg_resources
+import pytest
 
 # Python LSP imports
 from pylsp import uris
 from pylsp.workspace import Document, Workspace
-from pylsp_black.plugin import load_config, pylsp_format_document, pylsp_format_range
 
-# Third-party imports
-import black
-import pytest
+# Local imports
+from pylsp_black.plugin import load_config, pylsp_format_document, pylsp_format_range
 
 here = Path(__file__).parent
 fixtures_dir = here / "fixtures"
