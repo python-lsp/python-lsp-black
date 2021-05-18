@@ -97,7 +97,12 @@ def load_config(filename: str) -> Dict:
             black.TargetVersion[x.upper()] for x in file_config["target_version"]
         )
     elif file_config.get("py36"):
-        target_version = black.PY36_VERSIONS
+        target_version = {
+            black.TargetVersion.PY36,
+            black.TargetVersion.PY37,
+            black.TargetVersion.PY38,
+            black.TargetVersion.PY39,
+        }
     else:
         target_version = set()
 
