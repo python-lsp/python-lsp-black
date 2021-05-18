@@ -196,7 +196,12 @@ def test_load_config_target_version():
 def test_load_config_py36():
     config = load_config(str(fixtures_dir / "py36" / "example.py"))
 
-    assert config["target_version"] == black.PY36_VERSIONS
+    assert config["target_version"] == {
+        black.TargetVersion.PY36,
+        black.TargetVersion.PY37,
+        black.TargetVersion.PY38,
+        black.TargetVersion.PY39,
+    }
 
 
 def test_load_config_defaults():
