@@ -1,4 +1,3 @@
-
 # Standard library imports
 import types
 from pathlib import Path
