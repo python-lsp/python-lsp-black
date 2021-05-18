@@ -15,3 +15,4 @@ To release a new version of python-lsp-black:
 14. git add -A && git commit -m "Back to work"
 15. git push upstream master
 16. git push upstream --tags
+17. Draft a new release in GitHub using the new tag.
