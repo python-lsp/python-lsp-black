@@ -2,16 +2,16 @@ from typing import Dict
 
 import black
 import toml
-from pyls import hookimpl
+from pylsp import hookimpl
 
 
 @hookimpl(tryfirst=True)
-def pyls_format_document(document):
+def pylsp_format_document(document):
     return format_document(document)
 
 
 @hookimpl(tryfirst=True)
-def pyls_format_range(document, range):
+def pylsp_format_range(document, range):
     range["start"]["character"] = 0
     range["end"]["line"] += 1
     range["end"]["character"] = 0
@@ -97,7 +97,12 @@ def load_config(filename: str) -> Dict:
             black.TargetVersion[x.upper()] for x in file_config["target_version"]
         )
     elif file_config.get("py36"):
-        target_version = black.PY36_VERSIONS
+        target_version = {
+            black.TargetVersion.PY36,
+            black.TargetVersion.PY37,
+            black.TargetVersion.PY38,
+            black.TargetVersion.PY39,
+        }
     else:
         target_version = set()
 

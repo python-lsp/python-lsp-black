@@ -1,14 +1,19 @@
+# Standard library imports
 import types
 from pathlib import Path
 from unittest.mock import Mock
 
+# Third-party imports
 import black
 import pkg_resources
 import pytest
-from pyls import uris
-from pyls.workspace import Document, Workspace
 
-from pyls_black.plugin import load_config, pyls_format_document, pyls_format_range
+# Python LSP imports
+from pylsp import uris
+from pylsp.workspace import Document, Workspace
+
+# Local imports
+from pylsp_black.plugin import load_config, pylsp_format_document, pylsp_format_range
 
 here = Path(__file__).parent
 fixtures_dir = here / "fixtures"
@@ -62,8 +67,8 @@ def config_document(workspace):
     return Document(uri, workspace)
 
 
-def test_pyls_format_document(unformatted_document, formatted_document):
-    result = pyls_format_document(unformatted_document)
+def test_pylsp_format_document(unformatted_document, formatted_document):
+    result = pylsp_format_document(unformatted_document)
 
     assert result == [
         {
@@ -77,7 +82,7 @@ def test_pyls_format_document(unformatted_document, formatted_document):
 
 
 def test_pyls_format_pyi_document(unformatted_pyi_document, formatted_pyi_document):
-    result = pyls_format_document(unformatted_pyi_document)
+    result = pylsp_format_document(unformatted_pyi_document)
 
     assert result == [
         {
@@ -90,26 +95,26 @@ def test_pyls_format_pyi_document(unformatted_pyi_document, formatted_pyi_docume
     ]
 
 
-def test_pyls_format_document_unchanged(formatted_document):
-    result = pyls_format_document(formatted_document)
+def test_pylsp_format_document_unchanged(formatted_document):
+    result = pylsp_format_document(formatted_document)
 
     assert result == []
 
 
 def test_pyls_format_pyi_document_unchanged(formatted_pyi_document):
-    result = pyls_format_document(formatted_pyi_document)
+    result = pylsp_format_document(formatted_pyi_document)
 
     assert result == []
 
 
-def test_pyls_format_document_syntax_error(invalid_document):
-    result = pyls_format_document(invalid_document)
+def test_pylsp_format_document_syntax_error(invalid_document):
+    result = pylsp_format_document(invalid_document)
 
     assert result == []
 
 
-def test_pyls_format_document_with_config(config_document):
-    result = pyls_format_document(config_document)
+def test_pylsp_format_document_with_config(config_document):
+    result = pylsp_format_document(config_document)
 
     assert result == [
         {
@@ -134,13 +139,13 @@ def test_pyls_format_document_with_config(config_document):
     ("start", "end", "expected"),
     [(0, 0, 'a = "hello"\n'), (1, 1, "b = 42\n"), (0, 1, 'a = "hello"\nb = 42\n')],
 )
-def test_pyls_format_range(unformatted_document, start, end, expected):
+def test_pylsp_format_range(unformatted_document, start, end, expected):
     range = {
         "start": {"line": start, "character": 0},
         "end": {"line": end, "character": 0},
     }
 
-    result = pyls_format_range(unformatted_document, range=range)
+    result = pylsp_format_range(unformatted_document, range=range)
 
     assert result == [
         {
@@ -153,18 +158,18 @@ def test_pyls_format_range(unformatted_document, start, end, expected):
     ]
 
 
-def test_pyls_format_range_unchanged(formatted_document):
+def test_pylsp_format_range_unchanged(formatted_document):
     range = {"start": {"line": 0, "character": 0}, "end": {"line": 1, "character": 0}}
 
-    result = pyls_format_range(formatted_document, range=range)
+    result = pylsp_format_range(formatted_document, range=range)
 
     assert result == []
 
 
-def test_pyls_format_range_syntax_error(invalid_document):
+def test_pylsp_format_range_syntax_error(invalid_document):
     range = {"start": {"line": 0, "character": 0}, "end": {"line": 1, "character": 0}}
 
-    result = pyls_format_range(invalid_document, range=range)
+    result = pylsp_format_range(invalid_document, range=range)
 
     assert result == []
 
@@ -191,7 +196,12 @@ def test_load_config_target_version():
 def test_load_config_py36():
     config = load_config(str(fixtures_dir / "py36" / "example.py"))
 
-    assert config["target_version"] == black.PY36_VERSIONS
+    assert config["target_version"] == {
+        black.TargetVersion.PY36,
+        black.TargetVersion.PY37,
+        black.TargetVersion.PY38,
+        black.TargetVersion.PY39,
+    }
 
 
 def test_load_config_defaults():
@@ -207,8 +217,8 @@ def test_load_config_defaults():
 
 
 def test_entry_point():
-    distribution = pkg_resources.get_distribution("pyls-black")
-    entry_point = distribution.get_entry_info("pyls", "pyls_black")
+    distribution = pkg_resources.get_distribution("python-lsp-black")
+    entry_point = distribution.get_entry_info("pylsp", "pylsp_black")
 
     assert entry_point is not None
 
