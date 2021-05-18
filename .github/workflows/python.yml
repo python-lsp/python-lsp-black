@@ -20,7 +20,13 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: python -m pip install -e .[dev]
-    - name: Lint
-      run: make lint
+    - name: Flake8 lint
+      run: flake8 .
+    - name: Black lint
+      run: black --diff --check .
+    - name: isort lint
+      run: isort --check --diff .
+    - name: MyPy lint
+      run: mypy .
     - name: Test
-      run: make test
+      run: pytest -v tests/
