@@ -4,6 +4,8 @@ import black
 import toml
 from pyls import hookimpl
 
+_PY36_VERSIONS = {black.TargetVersion[v] for v in ["PY36", "PY37", "PY38", "PY39"]}
+
 
 @hookimpl(tryfirst=True)
 def pyls_format_document(document):
@@ -97,7 +99,7 @@ def load_config(filename: str) -> Dict:
             black.TargetVersion[x.upper()] for x in file_config["target_version"]
         )
     elif file_config.get("py36"):
-        target_version = black.PY36_VERSIONS
+        target_version = _PY36_VERSIONS
     else:
         target_version = set()
 

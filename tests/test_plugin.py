@@ -8,7 +8,12 @@ import pytest
 from pyls import uris
 from pyls.workspace import Document, Workspace
 
-from pyls_black.plugin import load_config, pyls_format_document, pyls_format_range
+from pyls_black.plugin import (
+    _PY36_VERSIONS,
+    load_config,
+    pyls_format_document,
+    pyls_format_range,
+)
 
 here = Path(__file__).parent
 fixtures_dir = here / "fixtures"
@@ -191,7 +196,7 @@ def test_load_config_target_version():
 def test_load_config_py36():
     config = load_config(str(fixtures_dir / "py36" / "example.py"))
 
-    assert config["target_version"] == black.PY36_VERSIONS
+    assert config["target_version"] == _PY36_VERSIONS
 
 
 def test_load_config_defaults():
