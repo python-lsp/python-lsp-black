@@ -6,11 +6,15 @@
 
 > [Black](https://github.com/ambv/black) plugin for the [Python LSP Server](https://github.com/python-lsp/python-lsp-server).
 
+## Install
+
 In the same `virtualenv` as `python-lsp-server`:
 
 ```shell
 pip install python-lsp-black
 ```
+
+# Usage
 
 To avoid unexpected results you should make sure `yapf` and `autopep8` are not installed.
 
@@ -19,3 +23,25 @@ To avoid unexpected results you should make sure `yapf` and `autopep8` are not i
 * Text selections are treated as if they were a separate Python file.
   Unfortunately this means you can't format an indented block of code.
 * `python-lsp-black` will use your project's [pyproject.toml](https://github.com/ambv/black#pyprojecttoml) if it has one.
+
+# Development
+
+To install the project for development you need to specify the dev optional dependencies:
+
+```shell
+python -m venv .venv
+. .venv/bin/activate
+pip install -e .[dev]
+```
+
+To run tests:
+
+```shell
+make test
+```
+
+To run linters (flake8, black, isort, mypy...)
+
+```shell
+make lint
+```
