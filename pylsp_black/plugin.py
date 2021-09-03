@@ -1,8 +1,18 @@
+import os
+from pathlib import Path
 from typing import Dict
 
 import black
 import toml
 from pylsp import hookimpl
+
+GLOBAL_CONFIG: Path
+if os.name == "nt":
+    GLOBAL_CONFIG = Path.home() / ".black"
+elif "XDG_CONFIG_HOME" in os.environ:
+    GLOBAL_CONFIG = Path(os.environ["XDG_CONFIG_HOME"]) / "black"
+else:
+    GLOBAL_CONFIG = Path.home() / ".config/black"
 
 
 @hookimpl(tryfirst=True)
@@ -74,7 +84,10 @@ def load_config(filename: str) -> Dict:
     pyproject_filename = root / "pyproject.toml"
 
     if not pyproject_filename.is_file():
-        return defaults
+        if GLOBAL_CONFIG.exists():
+            pyproject_filename = GLOBAL_CONFIG
+        else:
+            return defaults
 
     try:
         pyproject_toml = toml.load(str(pyproject_filename))
