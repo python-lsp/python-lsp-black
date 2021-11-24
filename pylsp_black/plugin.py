@@ -1,8 +1,11 @@
+import logging
 from typing import Dict
 
 import black
 import toml
 from pylsp import hookimpl
+
+logger = logging.getLogger(__name__)
 
 
 @hookimpl(tryfirst=True)
@@ -56,8 +59,13 @@ def format_text(*, text, config):
         is_pyi=config["pyi"],
         string_normalization=not config["skip_string_normalization"],
     )
-
-    return black.format_file_contents(text, fast=config["fast"], mode=mode)
+    try:
+        return black.format_file_contents(text, fast=config["fast"], mode=mode)
+    except black.NothingChanged:
+        raise
+    except Exception as e:
+        logger.exception("Error formatting with black: %s", e)
+        raise black.NothingChanged
 
 
 def load_config(filename: str) -> Dict:
@@ -74,11 +82,16 @@ def load_config(filename: str) -> Dict:
     pyproject_filename = root / "pyproject.toml"
 
     if not pyproject_filename.is_file():
+        logger.info("Using defaults for python-lsp-black: %r", defaults)
         return defaults
 
     try:
         pyproject_toml = toml.load(str(pyproject_filename))
     except (toml.TomlDecodeError, OSError):
+        logger.info(
+            "Error decoding pyproject.toml file, using defaults for python-lsp-black: %r",
+            defaults,
+        )
         return defaults
 
     file_config = pyproject_toml.get("tool", {}).get("black", {})
@@ -107,5 +120,9 @@ def load_config(filename: str) -> Dict:
         target_version = set()
 
     config["target_version"] = target_version
+
+    logger.info(
+        "Using config from %s for python-lsp-black: %r", pyproject_filename, config
+    )
 
     return config
