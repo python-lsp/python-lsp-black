@@ -64,7 +64,7 @@ def format_text(*, text, config):
     except black.NothingChanged:
         raise
     except Exception as e:
-        logger.exception("Error formatting with black: %s", e)
+        logger.error("Error formatting with black: %s", e.message)
         raise black.NothingChanged
 
 
