@@ -89,7 +89,7 @@ def load_config(filename: str) -> Dict:
         pyproject_toml = toml.load(str(pyproject_filename))
     except (toml.TomlDecodeError, OSError):
         logger.info(
-            "Error decoding pyproject.toml file, using defaults for python-lsp-black: %r",
+            "Error decoding pyproject.toml, using defaults for python-lsp-black: %r",
             defaults,
         )
         return defaults
