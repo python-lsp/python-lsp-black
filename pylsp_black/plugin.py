@@ -37,16 +37,8 @@ def format_document(document, range=None):
 
     try:
         formatted_text = format_text(text=text, config=config)
-    except (
-        ValueError,
+    except black.NothingChanged:
         # raised when the file is already formatted correctly
-        black.NothingChanged,
-        # raised when the file being formatted has an indentation error
-        IndentationError,
-        # raised when black produces invalid Python code or formats the file
-        # differently on the second pass
-        AssertionError,
-    ):
         return []
 
     return [{"range": range, "newText": formatted_text}]
@@ -60,11 +52,19 @@ def format_text(*, text, config):
         string_normalization=not config["skip_string_normalization"],
     )
     try:
+        # will raise black.NothingChanged, we want to bubble that exception up
         return black.format_file_contents(text, fast=config["fast"], mode=mode)
-    except black.NothingChanged:
-        raise
-    except Exception as e:
-        logger.error("Error formatting with black: %s", e.message)
+    except (
+        # raised when the file has syntax errors
+        ValueError,
+        # raised when the file being formatted has an indentation error
+        IndentationError,
+        # raised when black produces invalid Python code or formats the file
+        # differently on the second pass
+        AssertionError,
+    ) as e:
+        # errors will show on lsp stderr stream
+        logger.error("Error formatting with black: %s", e)
         raise black.NothingChanged
 
 
