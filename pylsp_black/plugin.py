@@ -65,7 +65,7 @@ def format_text(*, text, config):
     ) as e:
         # errors will show on lsp stderr stream
         logger.error("Error formatting with black: %s", e)
-        raise black.NothingChanged
+        raise black.NothingChanged from e
 
 
 def load_config(filename: str) -> Dict:
