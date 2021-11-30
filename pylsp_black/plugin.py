@@ -82,14 +82,14 @@ def load_config(filename: str) -> Dict:
     pyproject_filename = root / "pyproject.toml"
 
     if not pyproject_filename.is_file():
-        logger.info("Using defaults for python-lsp-black: %r", defaults)
+        logger.info("Using defaults: %r", defaults)
         return defaults
 
     try:
         pyproject_toml = toml.load(str(pyproject_filename))
     except (toml.TomlDecodeError, OSError):
-        logger.info(
-            "Error decoding pyproject.toml, using defaults for python-lsp-black: %r",
+        logger.warning(
+            "Error decoding pyproject.toml, using defaults: %r",
             defaults,
         )
         return defaults
@@ -121,8 +121,6 @@ def load_config(filename: str) -> Dict:
 
     config["target_version"] = target_version
 
-    logger.info(
-        "Using config from %s for python-lsp-black: %r", pyproject_filename, config
-    )
+    logger.info("Using config from %s: %r", pyproject_filename, config)
 
     return config
