@@ -51,7 +51,7 @@ To run linters:
 
 ```shell
 make lint  # just a shortcut to pre-commit run -a
-make <linter_name>  # black, flake8, isort, markdown, mypy
+make <linter_name>  # black, flake8, isort, mypy
 ```
 
 To upgrade the version of the pre-commit hooks:

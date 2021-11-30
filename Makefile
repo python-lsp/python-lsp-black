@@ -10,9 +10,6 @@ flake8:
 isort:
 	pre-commit run -a isort
 
-markdown:
-	pre-commit run -a mdformat
-
 mypy:
 	pre-commit run -a mypy
 
