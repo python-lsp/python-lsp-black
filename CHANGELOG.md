@@ -1,3 +1,26 @@
+## Version 1.0.1 (2021-12-01)
+
+### Issues Closed
+
+* [Issue 20](https://github.com/python-lsp/python-lsp-black/issues/20) - Formatting fails silently
+* [Issue 12](https://github.com/python-lsp/python-lsp-black/issues/12) - Fix MyPy linting
+* [Issue 9](https://github.com/python-lsp/python-lsp-black/issues/9) - Ignore virtualenv in linters
+* [Issue 8](https://github.com/python-lsp/python-lsp-black/issues/8) - Add Development section to README
+* [Issue 7](https://github.com/python-lsp/python-lsp-black/issues/7) - Add pre-commit checks
+
+In this release 5 issues were closed.
+
+### Pull Requests Merged
+
+* [PR 23](https://github.com/python-lsp/python-lsp-black/pull/23) - Add pre-commit hooks, by [@haplo](https://github.com/haplo)
+* [PR 22](https://github.com/python-lsp/python-lsp-black/pull/22) - Log black errors to stderr, by [@haplo](https://github.com/haplo) ([20](https://github.com/python-lsp/python-lsp-black/issues/20))
+* [PR 14](https://github.com/python-lsp/python-lsp-black/pull/14) - Add virtualenv to gitignore and Python 3.9 to black target versions, by [@haplo](https://github.com/haplo)
+* [PR 13](https://github.com/python-lsp/python-lsp-black/pull/13) - Install MyPy stubs, by [@haplo](https://github.com/haplo) ([12](https://github.com/python-lsp/python-lsp-black/issues/12))
+* [PR 11](https://github.com/python-lsp/python-lsp-black/pull/11) - Add Development section to README, by [@haplo](https://github.com/haplo) ([8](https://github.com/python-lsp/python-lsp-black/issues/8))
+* [PR 10](https://github.com/python-lsp/python-lsp-black/pull/10) - Exclude venv and other directories from linters, by [@haplo](https://github.com/haplo) ([9](https://github.com/python-lsp/python-lsp-black/issues/9))
+
+In this release 1 pull request was closed.
+
 ## Version 1.0.0 (2021/05/18)
 
 ### Issues Closed
