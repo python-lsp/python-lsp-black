@@ -1,22 +1,17 @@
-lint: flake8 black-check isort-check mypy
-
-flake8:
-	flake8 .
+lint:
+	pre-commit run -a
 
 black:
-	black .
+	pre-commit run -a black
 
-black-check:
-	black --diff --check .
+flake8:
+	pre-commit run -a flake8
 
 isort:
-	isort .
-
-isort-check:
-	isort --check-only .
+	pre-commit run -a isort
 
 mypy:
-	mypy .
+	pre-commit run -a mypy
 
 test:
 	pytest -v .
