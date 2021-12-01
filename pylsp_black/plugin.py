@@ -1,7 +1,7 @@
 import logging
 import os
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Optional
 
 import black
 import toml
@@ -9,13 +9,16 @@ from pylsp import hookimpl
 
 logger = logging.getLogger(__name__)
 
-GLOBAL_CONFIG: Path
-if os.name == "nt":
-    GLOBAL_CONFIG = Path.home() / ".black"
-elif "XDG_CONFIG_HOME" in os.environ:
-    GLOBAL_CONFIG = Path(os.environ["XDG_CONFIG_HOME"]) / "black"
-else:
-    GLOBAL_CONFIG = Path.home() / ".config" / "black"
+GLOBAL_CONFIG: Optional[Path] = None
+try:
+    if os.name == "nt":
+        GLOBAL_CONFIG = Path.home() / ".black"
+    elif "XDG_CONFIG_HOME" in os.environ:
+        GLOBAL_CONFIG = Path(os.environ["XDG_CONFIG_HOME"]) / "black"
+    else:
+        GLOBAL_CONFIG = Path.home() / ".config" / "black"
+except Exception as e:
+    logger.error("Error determining black global config file path: %s", e)
 
 
 @hookimpl(tryfirst=True)
@@ -92,7 +95,7 @@ def load_config(filename: str) -> Dict:
     pyproject_filename = root / "pyproject.toml"
 
     if not pyproject_filename.is_file():
-        if GLOBAL_CONFIG.exists():
+        if GLOBAL_CONFIG is not None and GLOBAL_CONFIG.exists():
             pyproject_filename = GLOBAL_CONFIG
             logger.info("Using global black config at %s", pyproject_filename)
         else:
