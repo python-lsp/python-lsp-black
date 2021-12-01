@@ -19,6 +19,9 @@ try:
         GLOBAL_CONFIG = Path.home() / ".config" / "black"
 except Exception as e:
     logger.error("Error determining black global config file path: %s", e)
+else:
+    if GLOBAL_CONFIG is not None and GLOBAL_CONFIG.exists():
+        logger.info("Found black global config file at %s", GLOBAL_CONFIG)
 
 
 @hookimpl(tryfirst=True)
