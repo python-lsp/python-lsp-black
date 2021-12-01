@@ -15,7 +15,7 @@ if os.name == "nt":
 elif "XDG_CONFIG_HOME" in os.environ:
     GLOBAL_CONFIG = Path(os.environ["XDG_CONFIG_HOME"]) / "black"
 else:
-    GLOBAL_CONFIG = Path.home() / ".config/black"
+    GLOBAL_CONFIG = Path.home() / ".config" / "black"
 
 
 @hookimpl(tryfirst=True)
