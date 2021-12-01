@@ -19,7 +19,7 @@ In this release 5 issues were closed.
 * [PR 11](https://github.com/python-lsp/python-lsp-black/pull/11) - Add Development section to README, by [@haplo](https://github.com/haplo) ([8](https://github.com/python-lsp/python-lsp-black/issues/8))
 * [PR 10](https://github.com/python-lsp/python-lsp-black/pull/10) - Exclude venv and other directories from linters, by [@haplo](https://github.com/haplo) ([9](https://github.com/python-lsp/python-lsp-black/issues/9))
 
-In this release 1 pull request was closed.
+In this release 6 pull request was closed.
 
 ## Version 1.0.0 (2021/05/18)
 
