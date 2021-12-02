@@ -1,5 +1,6 @@
 import logging
 import os
+from functools import lru_cache
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -103,6 +104,7 @@ def format_text(*, text, config):
         raise black.NothingChanged from e
 
 
+@lru_cache(100)
 def load_config(filename: str) -> Dict:
     defaults = {
         "line_length": 88,
