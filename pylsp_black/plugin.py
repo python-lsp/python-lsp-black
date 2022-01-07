@@ -7,7 +7,10 @@ import black
 import toml
 from pylsp import hookimpl
 
+from pylsp_black._utils import get_eol_chars
+
 logger = logging.getLogger(__name__)
+
 
 GLOBAL_CONFIG: Optional[Path] = None
 try:
@@ -68,8 +71,25 @@ def format_text(*, text, config):
         string_normalization=not config["skip_string_normalization"],
     )
     try:
-        # will raise black.NothingChanged, we want to bubble that exception up
-        return black.format_file_contents(text, fast=config["fast"], mode=mode)
+        # Black's format_file_contents only works reliably when eols are '\n'. It gives
+        # an error for '\r' and produces wrong formatting for '\r\n'. So we replace
+        # those eols by '\n' before formatting and restore them afterwards.
+        replace_eols = False
+        eol_chars = get_eol_chars(text)
+        if eol_chars is not None and eol_chars != "\n":
+            replace_eols = True
+            text = text.replace(eol_chars, "\n")
+
+        # Will raise black.NothingChanged, we want to bubble that exception up
+        formatted_text = black.format_file_contents(
+            text, fast=config["fast"], mode=mode
+        )
+
+        # Restore eols if necessary.
+        if replace_eols:
+            formatted_text = formatted_text.replace("\n", eol_chars)
+
+        return formatted_text
     except (
         # raised when the file has syntax errors
         ValueError,
