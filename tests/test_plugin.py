@@ -40,6 +40,15 @@ def unformatted_pyi_document(workspace):
 
 
 @pytest.fixture
+def unformatted_crlf_document(workspace):
+    path = fixtures_dir / "unformatted-crlf.py"
+    uri = f"file:/{path}"
+    with open(path, "r", newline="") as f:
+        source = f.read()
+    return Document(uri, workspace, source=source)
+
+
+@pytest.fixture
 def formatted_document(workspace):
     path = fixtures_dir / "formatted.txt"
     uri = f"file:/{path}"
@@ -51,6 +60,15 @@ def formatted_pyi_document(workspace):
     path = fixtures_dir / "formatted.pyi"
     uri = f"file:/{path}"
     return Document(uri, workspace)
+
+
+@pytest.fixture
+def formatted_crlf_document(workspace):
+    path = fixtures_dir / "formatted-crlf.py"
+    uri = f"file:/{path}"
+    with open(path, "r", newline="") as f:
+        source = f.read()
+    return Document(uri, workspace, source=source)
 
 
 @pytest.fixture
@@ -225,3 +243,17 @@ def test_entry_point():
 
     module = entry_point.load()
     assert isinstance(module, types.ModuleType)
+
+
+def test_pylsp_format_crlf_document(unformatted_crlf_document, formatted_crlf_document):
+    result = pylsp_format_document(unformatted_crlf_document)
+
+    assert result == [
+        {
+            "range": {
+                "start": {"line": 0, "character": 0},
+                "end": {"line": 4, "character": 0},
+            },
+            "newText": formatted_crlf_document.source,
+        }
+    ]
