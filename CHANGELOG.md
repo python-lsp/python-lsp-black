@@ -1,3 +1,19 @@
+## Version 1.1.0 (2022-01-30)
+
+### Issues Closed
+
+* [Issue 29](https://github.com/python-lsp/python-lsp-black/issues/29) - TypeError when formatting with Black 22.1 ([PR 30](https://github.com/python-lsp/python-lsp-black/pull/30) by [@wlcx](https://github.com/wlcx))
+* [Issue 25](https://github.com/python-lsp/python-lsp-black/issues/25) - Support global config file for black ([PR 19](https://github.com/python-lsp/python-lsp-black/pull/19) by [@jdost](https://github.com/jdost))
+
+In this release 2 issues were closed.
+
+### Pull Requests Merged
+
+* [PR 30](https://github.com/python-lsp/python-lsp-black/pull/30) - Fix TypeError when formatting with black 22.1.0+, by [@wlcx](https://github.com/wlcx) ([29](https://github.com/python-lsp/python-lsp-black/issues/29))
+* [PR 19](https://github.com/python-lsp/python-lsp-black/pull/19) - Support global config as a fallback, by [@jdost](https://github.com/jdost) ([25](https://github.com/python-lsp/python-lsp-black/issues/25))
+
+In this release 2 pull requests were closed.
+
 ## Version 1.0.1 (2021-12-01)
 
 ### Issues Closed
