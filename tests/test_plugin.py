@@ -190,7 +190,7 @@ def test_load_config():
 def test_load_config_target_version():
     config = load_config(str(fixtures_dir / "target_version" / "example.py"))
 
-    assert config["target_version"] == {black.TargetVersion.PY27}
+    assert config["target_version"] == {black.TargetVersion.PY39}
 
 
 def test_load_config_py36():

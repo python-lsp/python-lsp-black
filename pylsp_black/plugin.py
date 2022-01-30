@@ -95,7 +95,11 @@ def load_config(filename: str) -> Dict:
 
     root = black.find_project_root((filename,))
 
-    pyproject_filename = root / "pyproject.toml"
+    # Black 22.1.0+ returns a tuple
+    if isinstance(root, tuple):
+        pyproject_filename = root[0] / "pyproject.toml"
+    else:
+        pyproject_filename = root / "pyproject.toml"
 
     if not pyproject_filename.is_file():
         if GLOBAL_CONFIG is not None and GLOBAL_CONFIG.exists():
