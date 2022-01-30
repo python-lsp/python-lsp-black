@@ -139,6 +139,7 @@ def load_config(filename: str) -> Dict:
             black.TargetVersion.PY37,
             black.TargetVersion.PY38,
             black.TargetVersion.PY39,
+            black.TargetVersion.PY310,
         }
     else:
         target_version = set()

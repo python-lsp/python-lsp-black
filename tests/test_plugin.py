@@ -201,6 +201,7 @@ def test_load_config_py36():
         black.TargetVersion.PY37,
         black.TargetVersion.PY38,
         black.TargetVersion.PY39,
+        black.TargetVersion.PY310,
     }
 
 
