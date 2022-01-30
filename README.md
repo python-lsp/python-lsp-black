@@ -22,6 +22,7 @@ To avoid unexpected results you should make sure `yapf` and `autopep8` are not i
 - Text selections are treated as if they were a separate Python file.
   Unfortunately this means you can't format an indented block of code.
 - `python-lsp-black` will use your project's [pyproject.toml](https://github.com/psf/black#pyprojecttoml) if it has one.
+- `python-lsp-black` only officially supports the latest stable version of [black](https://github.com/psf/black). An effort is made to keep backwards-compatibility but older black versions will not be actively tested.
 
 # Development
 
