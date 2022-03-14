@@ -6,8 +6,7 @@ from typing import Dict, Optional
 import black
 import toml
 from pylsp import hookimpl
-
-from pylsp_black._utils import get_eol_chars
+from pylsp._utils import get_eol_chars
 
 logger = logging.getLogger(__name__)
 
