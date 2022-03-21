@@ -10,6 +10,7 @@ import pytest
 
 # Python LSP imports
 from pylsp import uris
+from pylsp.config.config import Config
 from pylsp.workspace import Document, Workspace
 
 # Local imports
@@ -23,6 +24,14 @@ fixtures_dir = here / "fixtures"
 def workspace(tmpdir):
     """Return a workspace."""
     return Workspace(uris.from_fs_path(str(tmpdir)), Mock())
+
+
+@pytest.fixture
+def config(workspace):
+    """Return a config object."""
+    cfg = Config(workspace.root_uri, {}, 0, {})
+    cfg._plugin_settings = {"plugins": {"black": {"line_length": 88}}}
+    return cfg
 
 
 @pytest.fixture
@@ -85,8 +94,22 @@ def config_document(workspace):
     return Document(uri, workspace)
 
 
-def test_pylsp_format_document(unformatted_document, formatted_document):
-    result = pylsp_format_document(unformatted_document)
+@pytest.fixture
+def unformatted_line_length(workspace):
+    path = fixtures_dir / "unformatted-line-length.py"
+    uri = f"file:/{path}"
+    return Document(uri, workspace)
+
+
+@pytest.fixture
+def formatted_line_length(workspace):
+    path = fixtures_dir / "formatted-line-length.py"
+    uri = f"file:/{path}"
+    return Document(uri, workspace)
+
+
+def test_pylsp_format_document(config, unformatted_document, formatted_document):
+    result = pylsp_format_document(config, unformatted_document)
 
     assert result == [
         {
@@ -99,8 +122,10 @@ def test_pylsp_format_document(unformatted_document, formatted_document):
     ]
 
 
-def test_pyls_format_pyi_document(unformatted_pyi_document, formatted_pyi_document):
-    result = pylsp_format_document(unformatted_pyi_document)
+def test_pyls_format_pyi_document(
+    config, unformatted_pyi_document, formatted_pyi_document
+):
+    result = pylsp_format_document(config, unformatted_pyi_document)
 
     assert result == [
         {
@@ -113,26 +138,26 @@ def test_pyls_format_pyi_document(unformatted_pyi_document, formatted_pyi_docume
     ]
 
 
-def test_pylsp_format_document_unchanged(formatted_document):
-    result = pylsp_format_document(formatted_document)
+def test_pylsp_format_document_unchanged(config, formatted_document):
+    result = pylsp_format_document(config, formatted_document)
 
     assert result == []
 
 
-def test_pyls_format_pyi_document_unchanged(formatted_pyi_document):
-    result = pylsp_format_document(formatted_pyi_document)
+def test_pyls_format_pyi_document_unchanged(config, formatted_pyi_document):
+    result = pylsp_format_document(config, formatted_pyi_document)
 
     assert result == []
 
 
-def test_pylsp_format_document_syntax_error(invalid_document):
-    result = pylsp_format_document(invalid_document)
+def test_pylsp_format_document_syntax_error(config, invalid_document):
+    result = pylsp_format_document(config, invalid_document)
 
     assert result == []
 
 
-def test_pylsp_format_document_with_config(config_document):
-    result = pylsp_format_document(config_document)
+def test_pylsp_format_document_with_config(config, config_document):
+    result = pylsp_format_document(config, config_document)
 
     assert result == [
         {
@@ -157,13 +182,13 @@ def test_pylsp_format_document_with_config(config_document):
     ("start", "end", "expected"),
     [(0, 0, 'a = "hello"\n'), (1, 1, "b = 42\n"), (0, 1, 'a = "hello"\nb = 42\n')],
 )
-def test_pylsp_format_range(unformatted_document, start, end, expected):
+def test_pylsp_format_range(config, unformatted_document, start, end, expected):
     range = {
         "start": {"line": start, "character": 0},
         "end": {"line": end, "character": 0},
     }
 
-    result = pylsp_format_range(unformatted_document, range=range)
+    result = pylsp_format_range(config, unformatted_document, range=range)
 
     assert result == [
         {
@@ -176,24 +201,24 @@ def test_pylsp_format_range(unformatted_document, start, end, expected):
     ]
 
 
-def test_pylsp_format_range_unchanged(formatted_document):
+def test_pylsp_format_range_unchanged(config, formatted_document):
     range = {"start": {"line": 0, "character": 0}, "end": {"line": 1, "character": 0}}
 
-    result = pylsp_format_range(formatted_document, range=range)
+    result = pylsp_format_range(config, formatted_document, range=range)
 
     assert result == []
 
 
-def test_pylsp_format_range_syntax_error(invalid_document):
+def test_pylsp_format_range_syntax_error(config, invalid_document):
     range = {"start": {"line": 0, "character": 0}, "end": {"line": 1, "character": 0}}
 
-    result = pylsp_format_range(invalid_document, range=range)
+    result = pylsp_format_range(config, invalid_document, range=range)
 
     assert result == []
 
 
-def test_load_config():
-    config = load_config(str(fixtures_dir / "config" / "example.py"))
+def test_load_config(config):
+    config = load_config(str(fixtures_dir / "config" / "example.py"), config)
 
     # TODO split into smaller tests
     assert config == {
@@ -205,14 +230,14 @@ def test_load_config():
     }
 
 
-def test_load_config_target_version():
-    config = load_config(str(fixtures_dir / "target_version" / "example.py"))
+def test_load_config_target_version(config):
+    config = load_config(str(fixtures_dir / "target_version" / "example.py"), config)
 
     assert config["target_version"] == {black.TargetVersion.PY39}
 
 
-def test_load_config_py36():
-    config = load_config(str(fixtures_dir / "py36" / "example.py"))
+def test_load_config_py36(config):
+    config = load_config(str(fixtures_dir / "py36" / "example.py"), config)
 
     assert config["target_version"] == {
         black.TargetVersion.PY36,
@@ -223,8 +248,8 @@ def test_load_config_py36():
     }
 
 
-def test_load_config_defaults():
-    config = load_config(str(fixtures_dir / "example.py"))
+def test_load_config_defaults(config):
+    config = load_config(str(fixtures_dir / "example.py"), config)
 
     assert config == {
         "line_length": 88,
@@ -245,8 +270,10 @@ def test_entry_point():
     assert isinstance(module, types.ModuleType)
 
 
-def test_pylsp_format_crlf_document(unformatted_crlf_document, formatted_crlf_document):
-    result = pylsp_format_document(unformatted_crlf_document)
+def test_pylsp_format_crlf_document(
+    config, unformatted_crlf_document, formatted_crlf_document
+):
+    result = pylsp_format_document(config, unformatted_crlf_document)
 
     assert result == [
         {
@@ -255,5 +282,22 @@ def test_pylsp_format_crlf_document(unformatted_crlf_document, formatted_crlf_do
                 "end": {"line": 4, "character": 0},
             },
             "newText": formatted_crlf_document.source,
+        }
+    ]
+
+
+def test_pylsp_format_line_length(
+    config, unformatted_line_length, formatted_line_length
+):
+    config.update({"plugins": {"black": {"line_length": 79}}})
+    result = pylsp_format_document(config, unformatted_line_length)
+
+    assert result == [
+        {
+            "range": {
+                "start": {"line": 0, "character": 0},
+                "end": {"line": 3, "character": 0},
+            },
+            "newText": formatted_line_length.source,
         }
     ]
