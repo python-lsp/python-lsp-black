@@ -14,7 +14,12 @@ from pylsp.config.config import Config
 from pylsp.workspace import Document, Workspace
 
 # Local imports
-from pylsp_black.plugin import load_config, pylsp_format_document, pylsp_format_range
+from pylsp_black.plugin import (
+    _load_config,
+    load_config,
+    pylsp_format_document,
+    pylsp_format_range,
+)
 
 here = Path(__file__).parent
 fixtures_dir = here / "fixtures"
@@ -30,7 +35,9 @@ def workspace(tmpdir):
 def config(workspace):
     """Return a config object."""
     cfg = Config(workspace.root_uri, {}, 0, {})
-    cfg._plugin_settings = {"plugins": {"black": {"line_length": 88}}}
+    cfg._plugin_settings = {
+        "plugins": {"black": {"line_length": 88, "cache_config": True}}
+    }
     return cfg
 
 
@@ -301,3 +308,19 @@ def test_pylsp_format_line_length(
             "newText": formatted_line_length.source,
         }
     ]
+
+
+def test_cache_config(config, unformatted_document):
+    # Cache should be working by default
+    for _ in range(5):
+        pylsp_format_document(config, unformatted_document)
+    assert _load_config.cache_info().hits == 4
+
+    # Clear cache and disable it
+    _load_config.cache_clear()
+    config.update({"plugins": {"black": {"cache_config": False}}})
+
+    # Cache should not be working now
+    for _ in range(5):
+        pylsp_format_document(config, unformatted_document)
+    assert _load_config.cache_info().hits == 0

@@ -106,7 +106,7 @@ def format_text(*, text, config):
 
 
 @lru_cache(100)
-def load_config(filename: str, client_config: Config) -> Dict:
+def _load_config(filename: str, client_config: Config) -> Dict:
     settings = client_config.plugin_settings("black")
 
     defaults = {
@@ -173,3 +173,13 @@ def load_config(filename: str, client_config: Config) -> Dict:
     logger.info("Using config from %s: %r", pyproject_filename, config)
 
     return config
+
+
+def load_config(filename: str, client_config: Config) -> Dict:
+    settings = client_config.plugin_settings("black")
+
+    # Use the original, not cached function to load settings if requested
+    if not settings.get("cache_config", True):
+        return _load_config.__wrapped__(filename, client_config)
+
+    return _load_config(filename, client_config)
