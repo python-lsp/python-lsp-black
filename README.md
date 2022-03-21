@@ -1,9 +1,9 @@
 # python-lsp-black
 
-[![PyPI](https://img.shields.io/pypi/v/pyls-black.svg)](https://pypi.org/project/python-lsp-black) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![PyPI](https://img.shields.io/pypi/v/python-lsp-black.svg)](https://pypi.org/project/python-lsp-black) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Python](https://github.com/python-lsp/python-lsp-black/actions/workflows/python.yml/badge.svg)](https://github.com/python-lsp/python-lsp-black/actions/workflows/python.yml)
 
-> [Black](https://github.com/psf/black) plugin for the [Python LSP Server](https://github.com/python-lsp/python-lsp-server).
+[Black](https://github.com/psf/black) plugin for the [Python LSP Server](https://github.com/python-lsp/python-lsp-server).
 
 ## Install
 
