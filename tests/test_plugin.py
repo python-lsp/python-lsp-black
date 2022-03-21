@@ -234,6 +234,7 @@ def test_load_config(config):
         "pyi": True,
         "fast": True,
         "skip_string_normalization": True,
+        "preview": False,
     }
 
 
@@ -264,6 +265,7 @@ def test_load_config_defaults(config):
         "pyi": False,
         "fast": False,
         "skip_string_normalization": False,
+        "preview": False,
     }
 
 

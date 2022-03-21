@@ -115,6 +115,7 @@ def _load_config(filename: str, client_config: Config) -> Dict:
         "pyi": filename.endswith(".pyi"),
         "skip_string_normalization": False,
         "target_version": set(),
+        "preview": settings.get("preview", False),
     }
 
     root = black.find_project_root((filename,))
