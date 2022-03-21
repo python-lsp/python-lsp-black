@@ -8,6 +8,7 @@ import black
 import toml
 from pylsp import hookimpl
 from pylsp._utils import get_eol_chars
+from pylsp.config.config import Config
 
 logger = logging.getLogger(__name__)
 
@@ -28,19 +29,19 @@ else:
 
 
 @hookimpl(tryfirst=True)
-def pylsp_format_document(document):
-    return format_document(document)
+def pylsp_format_document(config, document):
+    return format_document(config, document)
 
 
 @hookimpl(tryfirst=True)
-def pylsp_format_range(document, range):
+def pylsp_format_range(config, document, range):
     range["start"]["character"] = 0
     range["end"]["line"] += 1
     range["end"]["character"] = 0
-    return format_document(document, range)
+    return format_document(config, document, range)
 
 
-def format_document(document, range=None):
+def format_document(client_config, document, range=None):
     if range:
         start = range["start"]["line"]
         end = range["end"]["line"]
@@ -52,7 +53,7 @@ def format_document(document, range=None):
             "end": {"line": len(document.lines), "character": 0},
         }
 
-    config = load_config(document.path)
+    config = load_config(document.path, client_config)
 
     try:
         formatted_text = format_text(text=text, config=config)
@@ -105,9 +106,11 @@ def format_text(*, text, config):
 
 
 @lru_cache(100)
-def load_config(filename: str) -> Dict:
+def load_config(filename: str, client_config: Config) -> Dict:
+    settings = client_config.plugin_settings("black")
+
     defaults = {
-        "line_length": 88,
+        "line_length": settings.get("line_length", 88),
         "fast": False,
         "pyi": filename.endswith(".pyi"),
         "skip_string_normalization": False,
