@@ -41,6 +41,22 @@ def pylsp_format_range(config, document, range):
     return format_document(config, document, range)
 
 
+@hookimpl
+def pylsp_settings():
+    """Configuration options that can be set on the client."""
+    return {
+        "plugins": {
+            "black": {
+                # Disable this plugin by default because it's third-party.
+                "enabled": False,
+                "line_length": 88,
+                "preview": False,
+                "cache_config": False,
+            }
+        }
+    }
+
+
 def format_document(client_config, document, range=None):
     if range:
         start = range["start"]["line"]
