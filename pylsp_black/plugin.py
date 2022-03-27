@@ -180,7 +180,7 @@ def load_config(filename: str, client_config: Config) -> Dict:
     settings = client_config.plugin_settings("black")
 
     # Use the original, not cached function to load settings if requested
-    if not settings.get("cache_config", True):
+    if not settings.get("cache_config", False):
         return _load_config.__wrapped__(filename, client_config)
 
     return _load_config(filename, client_config)

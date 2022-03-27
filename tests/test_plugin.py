@@ -36,7 +36,7 @@ def config(workspace):
     """Return a config object."""
     cfg = Config(workspace.root_uri, {}, 0, {})
     cfg._plugin_settings = {
-        "plugins": {"black": {"line_length": 88, "cache_config": True}}
+        "plugins": {"black": {"line_length": 88, "cache_config": False}}
     }
     return cfg
 
@@ -313,16 +313,15 @@ def test_pylsp_format_line_length(
 
 
 def test_cache_config(config, unformatted_document):
-    # Cache should be working by default
-    for _ in range(5):
-        pylsp_format_document(config, unformatted_document)
-    assert _load_config.cache_info().hits == 4
-
-    # Clear cache and disable it
-    _load_config.cache_clear()
-    config.update({"plugins": {"black": {"cache_config": False}}})
-
-    # Cache should not be working now
+    # Cache should be off by default
     for _ in range(5):
         pylsp_format_document(config, unformatted_document)
     assert _load_config.cache_info().hits == 0
+
+    # Enable cache
+    config.update({"plugins": {"black": {"cache_config": True}}})
+
+    # Cache should be working now
+    for _ in range(5):
+        pylsp_format_document(config, unformatted_document)
+    assert _load_config.cache_info().hits == 4
