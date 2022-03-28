@@ -1,3 +1,20 @@
+## Version 1.2.0 (2022-03-28)
+
+### Issues Closed
+
+* [Issue 24](https://github.com/python-lsp/python-lsp-black/issues/24) - Option to cache black configuration per-file
+
+In this release 1 issue was closed.
+
+### Pull Requests Merged
+
+* [PR 33](https://github.com/python-lsp/python-lsp-black/pull/33) - Update pre-commit hooks' versions, by [@haplo](https://github.com/haplo)
+* [PR 32](https://github.com/python-lsp/python-lsp-black/pull/32) - Fix PyPI badge in Readme, by [@ccordoba12](https://github.com/ccordoba12)
+* [PR 28](https://github.com/python-lsp/python-lsp-black/pull/28) - Correctly format files and ranges with line endings other than LF, by [@ccordoba12](https://github.com/ccordoba12)
+* [PR 26](https://github.com/python-lsp/python-lsp-black/pull/26) - Add client side configuration and cache configuration per file, by [@haplo](https://github.com/haplo)
+
+In this release 4 pull requests were closed.
+
 ## Version 1.1.0 (2022-01-30)
 
 ### Issues Closed
