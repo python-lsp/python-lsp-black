@@ -34,7 +34,7 @@ To avoid unexpected results you should make sure `yapf` and `autopep8` are not i
 # Configuration
 
 The plugin follows [python-lsp-server's
-configuration](https://github.com/python-lsp/python-lsp-server/#configuration=). These are
+configuration](https://github.com/python-lsp/python-lsp-server/#configuration). These are
 the valid configuration keys:
 
 - `pylsp.plugins.black.enabled`: boolean to enable/disable the plugin.

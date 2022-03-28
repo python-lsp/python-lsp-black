@@ -47,8 +47,7 @@ def pylsp_settings():
     return {
         "plugins": {
             "black": {
-                # Disable this plugin by default because it's third-party.
-                "enabled": False,
+                "enabled": True,
                 "line_length": 88,
                 "preview": False,
                 "cache_config": False,
