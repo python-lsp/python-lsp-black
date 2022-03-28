@@ -21,8 +21,31 @@ To avoid unexpected results you should make sure `yapf` and `autopep8` are not i
 - The code will only be formatted if it is syntactically valid Python.
 - Text selections are treated as if they were a separate Python file.
   Unfortunately this means you can't format an indented block of code.
-- `python-lsp-black` will use your project's [pyproject.toml](https://github.com/psf/black#pyprojecttoml) if it has one.
-- `python-lsp-black` only officially supports the latest stable version of [black](https://github.com/psf/black). An effort is made to keep backwards-compatibility but older black versions will not be actively tested.
+- `python-lsp-black` will use your project's
+  [pyproject.toml](https://github.com/psf/black#pyprojecttoml) if it has one.
+- `python-lsp-black` only officially supports the latest stable version of
+  [black](https://github.com/psf/black). An effort is made to keep backwards-compatibility
+  but older black versions will not be actively tested.
+- The plugin can cache the black configuration that applies to each Python file, this
+  improves performance of the plugin. When configuration caching is enabled any changes to
+  black's configuration will need the LSP server to be restarted. Configuration caching
+  can be disabled with the `cache_config` option, see *Configuration* below.
+
+# Configuration
+
+The plugin follows [python-lsp-server's
+configuration](https://github.com/python-lsp/python-lsp-server/#configuration=). These are
+the valid configuration keys:
+
+- `pylsp.plugins.black.enabled`: boolean to enable/disable the plugin.
+- `pylsp.plugins.black.cache_config`: a boolean to enable black configuration caching (see
+  *Usage*). `false` by default.
+- `pylsp.plugins.black.line_length`: an integer that maps to [black's
+  `max-line-length`](https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html#line-length)
+  setting. Defaults to 88 (same as black's default). This can also be set through black's
+  configuration files, which should be preferred for multi-user projects.
+- `pylsp.plugins.black.preview`: a boolean to enable or disable [black's `--preview`
+  setting](https://black.readthedocs.io/en/stable/the_black_code_style/future_style.html#preview-style).
 
 # Development
 
@@ -35,8 +58,8 @@ pip install -e .[dev]
 ```
 
 This project uses [pre-commit](https://pre-commit.com/) hooks to control code quality,
-install them to run them when creating a git commit, thus avoiding seeing errors when you
-create a pull request:
+install them to run automatically when creating a git commit, thus avoiding seeing errors
+when you create a pull request:
 
 ```shell
 pre-commit install
