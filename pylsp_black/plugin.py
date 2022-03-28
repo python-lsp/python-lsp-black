@@ -1,5 +1,6 @@
 import logging
 import os
+from functools import lru_cache
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -7,6 +8,7 @@ import black
 import toml
 from pylsp import hookimpl
 from pylsp._utils import get_eol_chars
+from pylsp.config.config import Config
 
 logger = logging.getLogger(__name__)
 
@@ -27,19 +29,34 @@ else:
 
 
 @hookimpl(tryfirst=True)
-def pylsp_format_document(document):
-    return format_document(document)
+def pylsp_format_document(config, document):
+    return format_document(config, document)
 
 
 @hookimpl(tryfirst=True)
-def pylsp_format_range(document, range):
+def pylsp_format_range(config, document, range):
     range["start"]["character"] = 0
     range["end"]["line"] += 1
     range["end"]["character"] = 0
-    return format_document(document, range)
+    return format_document(config, document, range)
 
 
-def format_document(document, range=None):
+@hookimpl
+def pylsp_settings():
+    """Configuration options that can be set on the client."""
+    return {
+        "plugins": {
+            "black": {
+                "enabled": True,
+                "line_length": 88,
+                "preview": False,
+                "cache_config": False,
+            }
+        }
+    }
+
+
+def format_document(client_config, document, range=None):
     if range:
         start = range["start"]["line"]
         end = range["end"]["line"]
@@ -51,7 +68,7 @@ def format_document(document, range=None):
             "end": {"line": len(document.lines), "character": 0},
         }
 
-    config = load_config(document.path)
+    config = load_config(document.path, client_config)
 
     try:
         formatted_text = format_text(text=text, config=config)
@@ -103,13 +120,17 @@ def format_text(*, text, config):
         raise black.NothingChanged from e
 
 
-def load_config(filename: str) -> Dict:
+@lru_cache(100)
+def _load_config(filename: str, client_config: Config) -> Dict:
+    settings = client_config.plugin_settings("black")
+
     defaults = {
-        "line_length": 88,
+        "line_length": settings.get("line_length", 88),
         "fast": False,
         "pyi": filename.endswith(".pyi"),
         "skip_string_normalization": False,
         "target_version": set(),
+        "preview": settings.get("preview", False),
     }
 
     root = black.find_project_root((filename,))
@@ -168,3 +189,13 @@ def load_config(filename: str) -> Dict:
     logger.info("Using config from %s: %r", pyproject_filename, config)
 
     return config
+
+
+def load_config(filename: str, client_config: Config) -> Dict:
+    settings = client_config.plugin_settings("black")
+
+    # Use the original, not cached function to load settings if requested
+    if not settings.get("cache_config", False):
+        return _load_config.__wrapped__(filename, client_config)
+
+    return _load_config(filename, client_config)
