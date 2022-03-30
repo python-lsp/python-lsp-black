@@ -52,7 +52,6 @@ def pylsp_settings():
                 "preview": False,
                 "cache_config": False,
             },
-            "flake8": {"max-line-length": 88},
             "yapf": {"enabled": False},
             "autopep8": {"enabled": False},
         }
