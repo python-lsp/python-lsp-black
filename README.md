@@ -15,7 +15,7 @@ pip install python-lsp-black
 
 # Usage
 
-To avoid unexpected results you should make sure `yapf` and `autopep8` are not installed.
+This plugin will disable the yapf and autopep8 plugins if installed.
 
 - `python-lsp-black` can either format an entire file or just the selected text.
 - The code will only be formatted if it is syntactically valid Python.
