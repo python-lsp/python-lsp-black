@@ -1,3 +1,11 @@
+## Version 1.2.1 (2022-04-12)
+
+### Pull Requests Merged
+
+* [PR 34](https://github.com/python-lsp/python-lsp-black/pull/34) - Disable Autopep8 and Yapf if this plugin is installed, by [@bageljrkhanofemus](https://github.com/bageljrkhanofemus)
+
+In this release 1 pull request was closed.
+
 ## Version 1.2.0 (2022-03-28)
 
 ### Issues Closed
