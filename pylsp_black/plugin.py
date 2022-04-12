@@ -51,7 +51,9 @@ def pylsp_settings():
                 "line_length": 88,
                 "preview": False,
                 "cache_config": False,
-            }
+            },
+            "yapf": {"enabled": False},
+            "autopep8": {"enabled": False},
         }
     }
 
