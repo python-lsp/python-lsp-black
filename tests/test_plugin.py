@@ -233,6 +233,7 @@ def test_load_config(config):
         "target_version": set(),
         "pyi": True,
         "fast": True,
+        "skip_magic_trailing_comma": False,
         "skip_string_normalization": True,
         "preview": False,
     }
@@ -264,6 +265,7 @@ def test_load_config_defaults(config):
         "target_version": set(),
         "pyi": False,
         "fast": False,
+        "skip_magic_trailing_comma": False,
         "skip_string_normalization": False,
         "preview": False,
     }
