@@ -87,6 +87,7 @@ def format_text(*, text, config):
         line_length=config["line_length"],
         is_pyi=config["pyi"],
         string_normalization=not config["skip_string_normalization"],
+        magic_trailing_comma=not config["skip_magic_trailing_comma"],
     )
     try:
         # Black's format_file_contents only works reliably when eols are '\n'. It gives
@@ -131,6 +132,7 @@ def _load_config(filename: str, client_config: Config) -> Dict:
         "fast": False,
         "pyi": filename.endswith(".pyi"),
         "skip_string_normalization": False,
+        "skip_magic_trailing_comma": False,
         "target_version": set(),
         "preview": settings.get("preview", False),
     }
