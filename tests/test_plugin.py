@@ -19,6 +19,7 @@ from pylsp_black.plugin import (
     load_config,
     pylsp_format_document,
     pylsp_format_range,
+    pylsp_settings,
 )
 
 here = Path(__file__).parent
@@ -273,7 +274,7 @@ def test_load_config_defaults(config):
 
 def test_entry_point():
     distribution = pkg_resources.get_distribution("python-lsp-black")
-    entry_point = distribution.get_entry_info("pylsp", "pylsp_black")
+    entry_point = distribution.get_entry_info("pylsp", "black")
 
     assert entry_point is not None
 
@@ -327,3 +328,13 @@ def test_cache_config(config, unformatted_document):
     for _ in range(5):
         pylsp_format_document(config, unformatted_document)
     assert _load_config.cache_info().hits == 4
+
+
+def test_pylsp_settings(config):
+    plugins = dict(config.plugin_manager.list_name_plugin())
+    assert "black" in plugins
+    assert plugins["black"] not in config.disabled_plugins
+    config.update({"plugins": {"black": {"enabled": False}}})
+    assert plugins["black"] in config.disabled_plugins
+    config.update(pylsp_settings())
+    assert plugins["black"] not in config.disabled_plugins
