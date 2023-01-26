@@ -1,14 +1,19 @@
 import logging
 import os
+import sys
 from functools import lru_cache
 from pathlib import Path
 from typing import Dict, Optional
 
 import black
-import toml
 from pylsp import hookimpl
 from pylsp._utils import get_eol_chars
 from pylsp.config.config import Config
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 
 logger = logging.getLogger(__name__)
 
@@ -154,8 +159,9 @@ def _load_config(filename: str, client_config: Config) -> Dict:
             return defaults
 
     try:
-        pyproject_toml = toml.load(str(pyproject_filename))
-    except (toml.TomlDecodeError, OSError):
+        with open(pyproject_filename, "rb") as f:
+            pyproject_toml = tomllib.load(f)
+    except (tomllib.TOMLDecodeError, OSError):
         logger.warning(
             "Error decoding pyproject.toml, using defaults: %r",
             defaults,
