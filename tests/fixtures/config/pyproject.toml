@@ -4,3 +4,4 @@ line-length = 20
 pyi = true
 skip-magic-trailing-comma = true
 skip-string-normalization = true
+preview = true

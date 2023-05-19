@@ -235,7 +235,7 @@ def test_load_config(config):
         "fast": True,
         "skip_magic_trailing_comma": True,
         "skip_string_normalization": True,
-        "preview": False,
+        "preview": True,
     }
 
 
