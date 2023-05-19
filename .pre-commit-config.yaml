@@ -17,7 +17,7 @@ repos:
   rev: v1.3.0
   hooks:
   - id: mypy
-    additional_dependencies: [black, types-pkg_resources, types-setuptools, types-toml]
+    additional_dependencies: [black, types-pkg_resources, types-setuptools]
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v4.4.0
   hooks:
