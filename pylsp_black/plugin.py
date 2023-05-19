@@ -88,6 +88,7 @@ def format_text(*, text, config):
         is_pyi=config["pyi"],
         string_normalization=not config["skip_string_normalization"],
         magic_trailing_comma=not config["skip_magic_trailing_comma"],
+        preview=config["preview"],
     )
     try:
         # Black's format_file_contents only works reliably when eols are '\n'. It gives
