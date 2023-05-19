@@ -233,7 +233,7 @@ def test_load_config(config):
         "target_version": set(),
         "pyi": True,
         "fast": True,
-        "skip_magic_trailing_comma": False,
+        "skip_magic_trailing_comma": True,
         "skip_string_normalization": True,
         "preview": False,
     }
