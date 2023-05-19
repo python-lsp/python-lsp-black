@@ -1,3 +1,24 @@
+## Version 1.3.0 (2023/05/19)
+
+### Issues Closed
+
+* [Issue 36](https://github.com/python-lsp/python-lsp-black/issues/36) - python-lsp-black ignores skip-magic-trailing-comma in .config/black ([PR 37](https://github.com/python-lsp/python-lsp-black/pull/37) by [@wstevick](https://github.com/wstevick))
+* [Issue 35](https://github.com/python-lsp/python-lsp-black/issues/35) - python-lsp-black does not respect black configurations
+
+In this release 2 issues were closed.
+
+### Pull Requests Merged
+
+* [PR 47](https://github.com/python-lsp/python-lsp-black/pull/47) - direnv support, by [@haplo](https://github.com/haplo)
+* [PR 46](https://github.com/python-lsp/python-lsp-black/pull/46) - Add Python 3.11, drop 3.7 from test matrix, by [@haplo](https://github.com/haplo)
+* [PR 45](https://github.com/python-lsp/python-lsp-black/pull/45) - Test preview and skip-magic-trailing-comma config parsing, by [@haplo](https://github.com/haplo)
+* [PR 44](https://github.com/python-lsp/python-lsp-black/pull/44) - pre-commit autoupdate, by [@haplo](https://github.com/haplo)
+* [PR 40](https://github.com/python-lsp/python-lsp-black/pull/40) - Replace the obsolete toml package with tomllib/tomli, by [@mgorny](https://github.com/mgorny)
+* [PR 38](https://github.com/python-lsp/python-lsp-black/pull/38) - Added missing `preview` kwarg in `black.FileMode`. Fixes #35., by [@JesusTorrado](https://github.com/JesusTorrado)
+* [PR 37](https://github.com/python-lsp/python-lsp-black/pull/37) - Add the possibility to configure skip-magic-trailing-comma, by [@wstevick](https://github.com/wstevick) ([36](https://github.com/python-lsp/python-lsp-black/issues/36))
+
+In this release 7 pull requests were closed.
+
 ## Version 1.2.1 (2022-04-12)
 
 ### Pull Requests Merged
