@@ -14,7 +14,7 @@ mypy:
 	pre-commit run -a mypy
 
 test:
-	pytest -v .
+	pytest -vv .
 
 build: lint test
 	python3 setup.py sdist bdist_wheel
