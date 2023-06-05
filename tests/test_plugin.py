@@ -42,6 +42,23 @@ def config(workspace):
 
 
 @pytest.fixture
+def config_with_skip_options(workspace):
+    """Return a config object."""
+    cfg = Config(workspace.root_uri, {}, 0, {})
+    cfg._plugin_settings = {
+        "plugins": {
+            "black": {
+                "line_length": 88,
+                "cache_config": False,
+                "skip_string_normalization": True,
+                "skip_magic_trailing_comma": True,
+            }
+        }
+    }
+    return cfg
+
+
+@pytest.fixture
 def unformatted_document(workspace):
     path = fixtures_dir / "unformatted.txt"
     uri = f"file:/{path}"
@@ -267,6 +284,22 @@ def test_load_config_defaults(config):
         "fast": False,
         "skip_magic_trailing_comma": False,
         "skip_string_normalization": False,
+        "preview": False,
+    }
+
+
+def test_load_config_with_skip_options(config_with_skip_options):
+    config = load_config(
+        str(fixtures_dir / "skip_options" / "example.py"), config_with_skip_options
+    )
+
+    assert config == {
+        "line_length": 88,
+        "target_version": set(),
+        "pyi": False,
+        "fast": False,
+        "skip_magic_trailing_comma": True,
+        "skip_string_normalization": True,
         "preview": False,
     }
 
