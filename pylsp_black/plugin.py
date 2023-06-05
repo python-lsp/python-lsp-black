@@ -137,8 +137,8 @@ def _load_config(filename: str, client_config: Config) -> Dict:
         "line_length": settings.get("line_length", 88),
         "fast": False,
         "pyi": filename.endswith(".pyi"),
-        "skip_string_normalization": False,
-        "skip_magic_trailing_comma": False,
+        "skip_string_normalization": settings.get("skip_string_normalization", False),
+        "skip_magic_trailing_comma": settings.get("skip_magic_trailing_comma", False),
         "target_version": set(),
         "preview": settings.get("preview", False),
     }
