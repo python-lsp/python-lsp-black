@@ -45,7 +45,7 @@ the valid configuration keys:
   setting. Defaults to 88 (same as black's default). This can also be set through black's
   configuration files, which should be preferred for multi-user projects.
 - `pylsp.plugins.black.preview`: a boolean to enable or disable [black's `--preview`
-  setting](https://black.readthedocs.io/en/stable/the_black_code_style/future_style.html#preview-style).
+  setting](https://black.readthedocs.io/en/stable/the_black_code_style/future_style.html#preview-style). `false` by default.
 - `pylsp.plugins.black.skip_string_normalization`: a boolean to enable or disable black's `--skip-string-normalization` setting. `false` by default.
 - `pylsp.plugins.black.skip_magic_trailing_comma`: a boolean to enable or disable black's `skip-magic-trailing-comma` setting. `false` by default.
 
