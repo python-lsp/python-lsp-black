@@ -139,7 +139,7 @@ def test_pylsp_format_document(config, unformatted_document, formatted_document)
         {
             "range": {
                 "start": {"line": 0, "character": 0},
-                "end": {"line": 2, "character": 0},
+                "end": {"line": 3, "character": 0},
             },
             "newText": formatted_document.source,
         }
@@ -204,7 +204,20 @@ def test_pylsp_format_document_with_config(config, config_document):
 
 @pytest.mark.parametrize(
     ("start", "end", "expected"),
-    [(0, 0, 'a = "hello"\n'), (1, 1, "b = 42\n"), (0, 1, 'a = "hello"\nb = 42\n')],
+    [
+        (0, 0, 'a = "hello"\n'),
+        (
+            1,
+            1,
+            'b = [\n    "a",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "long",\n    "line",\n]\n',
+        ),
+        (2, 2, "c = 42\n"),
+        (
+            0,
+            2,
+            'a = "hello"\nb = [\n    "a",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "long",\n    "line",\n]\nc = 42\n',
+        ),
+    ],
 )
 def test_pylsp_format_range(config, unformatted_document, start, end, expected):
     range = {
