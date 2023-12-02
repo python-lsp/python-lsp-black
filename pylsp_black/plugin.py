@@ -64,29 +64,33 @@ def pylsp_settings():
 
 
 def format_document(client_config, document, range=None):
+    text = document.source
+    config = load_config(document.path, client_config)
+    lines = [(range["start"]["line"] + 1, range["end"]["line"])] if range else ()
+
+    try:
+        formatted_text = format_text(text=text, config=config, lines=lines)
+    except black.NothingChanged:
+        # raised when the file is already formatted correctly
+        return []
+
     if range:
+        formatted_lines = formatted_text.splitlines(True)
+
         start = range["start"]["line"]
-        end = range["end"]["line"]
-        text = "".join(document.lines[start:end])
+        end = range["end"]["line"] + (len(formatted_lines) - len(document.lines))
+
+        formatted_text = "".join(formatted_lines[start:end])
     else:
-        text = document.source
         range = {
             "start": {"line": 0, "character": 0},
             "end": {"line": len(document.lines), "character": 0},
         }
 
-    config = load_config(document.path, client_config)
-
-    try:
-        formatted_text = format_text(text=text, config=config)
-    except black.NothingChanged:
-        # raised when the file is already formatted correctly
-        return []
-
     return [{"range": range, "newText": formatted_text}]
 
 
-def format_text(*, text, config):
+def format_text(*, text, config, lines):
     mode = black.FileMode(
         target_versions=config["target_version"],
         line_length=config["line_length"],
@@ -107,7 +111,7 @@ def format_text(*, text, config):
 
         # Will raise black.NothingChanged, we want to bubble that exception up
         formatted_text = black.format_file_contents(
-            text, fast=config["fast"], mode=mode
+            text, fast=config["fast"], mode=mode, lines=lines
         )
 
         # Restore eols if necessary.
