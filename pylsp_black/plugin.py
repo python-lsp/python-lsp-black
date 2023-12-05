@@ -66,6 +66,7 @@ def pylsp_settings():
 def format_document(client_config, document, range=None):
     text = document.source
     config = load_config(document.path, client_config)
+    # Black lines indices are "1-based and inclusive on both ends"
     lines = [(range["start"]["line"] + 1, range["end"]["line"])] if range else ()
 
     try:
