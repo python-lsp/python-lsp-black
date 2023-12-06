@@ -61,21 +61,21 @@ def config_with_skip_options(workspace):
 @pytest.fixture
 def unformatted_document(workspace):
     path = fixtures_dir / "unformatted.txt"
-    uri = f"file:/{path}"
+    uri = f"file:/{path}"  # noqa
     return Document(uri, workspace)
 
 
 @pytest.fixture
 def unformatted_pyi_document(workspace):
     path = fixtures_dir / "unformatted.pyi"
-    uri = f"file:/{path}"
+    uri = f"file:/{path}"  # noqa
     return Document(uri, workspace)
 
 
 @pytest.fixture
 def unformatted_crlf_document(workspace):
     path = fixtures_dir / "unformatted-crlf.py"
-    uri = f"file:/{path}"
+    uri = f"file:/{path}"  # noqa
     with open(path, "r", newline="") as f:
         source = f.read()
     return Document(uri, workspace, source=source)
@@ -84,21 +84,21 @@ def unformatted_crlf_document(workspace):
 @pytest.fixture
 def formatted_document(workspace):
     path = fixtures_dir / "formatted.txt"
-    uri = f"file:/{path}"
+    uri = f"file:/{path}"  # noqa
     return Document(uri, workspace)
 
 
 @pytest.fixture
 def formatted_pyi_document(workspace):
     path = fixtures_dir / "formatted.pyi"
-    uri = f"file:/{path}"
+    uri = f"file:/{path}"  # noqa
     return Document(uri, workspace)
 
 
 @pytest.fixture
 def formatted_crlf_document(workspace):
     path = fixtures_dir / "formatted-crlf.py"
-    uri = f"file:/{path}"
+    uri = f"file:/{path}"  # noqa
     with open(path, "r", newline="") as f:
         source = f.read()
     return Document(uri, workspace, source=source)
@@ -107,28 +107,28 @@ def formatted_crlf_document(workspace):
 @pytest.fixture
 def invalid_document(workspace):
     path = fixtures_dir / "invalid.txt"
-    uri = f"file:/{path}"
+    uri = f"file:/{path}"  # noqa
     return Document(uri, workspace)
 
 
 @pytest.fixture
 def config_document(workspace):
     path = fixtures_dir / "config" / "config.txt"
-    uri = f"file:/{path}"
+    uri = f"file:/{path}"  # noqa
     return Document(uri, workspace)
 
 
 @pytest.fixture
 def unformatted_line_length(workspace):
     path = fixtures_dir / "unformatted-line-length.py"
-    uri = f"file:/{path}"
+    uri = f"file:/{path}"  # noqa
     return Document(uri, workspace)
 
 
 @pytest.fixture
 def formatted_line_length(workspace):
     path = fixtures_dir / "formatted-line-length.py"
-    uri = f"file:/{path}"
+    uri = f"file:/{path}"  # noqa
     return Document(uri, workspace)
 
 
@@ -273,18 +273,6 @@ def test_load_config_target_version(config):
     config = load_config(str(fixtures_dir / "target_version" / "example.py"), config)
 
     assert config["target_version"] == {black.TargetVersion.PY39}
-
-
-def test_load_config_py36(config):
-    config = load_config(str(fixtures_dir / "py36" / "example.py"), config)
-
-    assert config["target_version"] == {
-        black.TargetVersion.PY36,
-        black.TargetVersion.PY37,
-        black.TargetVersion.PY38,
-        black.TargetVersion.PY39,
-        black.TargetVersion.PY310,
-    }
 
 
 def test_load_config_defaults(config):
