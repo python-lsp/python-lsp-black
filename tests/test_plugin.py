@@ -209,13 +209,13 @@ def test_pylsp_format_document_with_config(config, config_document):
         (
             1,
             1,
-            'b = [\n    "a",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "long",\n    "line",\n]\n',
+            'b = [\n    "a",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "long",\n    "line",\n]\n',  # noqa: E501
         ),
         (2, 2, "c = 42\n"),
         (
             0,
             2,
-            'a = "hello"\nb = [\n    "a",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "long",\n    "line",\n]\nc = 42\n',
+            'a = "hello"\nb = [\n    "a",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "very",\n    "long",\n    "line",\n]\nc = 42\n',  # noqa: E501
         ),
     ],
 )
