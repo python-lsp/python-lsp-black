@@ -1,2 +1,3 @@
 a = 'hello'
-b =  42
+b = ["a", "very", "very", "very", "very", "very", "very", "very", "very", "long", "line"]
+c =  42
