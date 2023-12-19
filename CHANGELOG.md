@@ -1,3 +1,30 @@
+# History of changes
+
+## Version 2.0.0 (2023-12-19)
+
+### New features
+
+* Add support to format indented selections of code. This requires Black 23.11.0+
+* Change entrypoint name to be `black`. This changes the options namespace for
+  this plugin from `pylsp.pylsp_black` to `pylsp.black`.
+* Drop support for Python 3.7.
+
+### Issues Closed
+
+* [Issue 42](https://github.com/python-lsp/python-lsp-black/issues/42) - Ineffective range formatting ([PR 52](https://github.com/python-lsp/python-lsp-black/pull/52) by [@remisalmon](https://github.com/remisalmon))
+* [Issue 41](https://github.com/python-lsp/python-lsp-black/issues/41) - Configuration key and plugin name mismatch ([PR 39](https://github.com/python-lsp/python-lsp-black/pull/39) by [@chantera](https://github.com/chantera))
+
+In this release 2 issues were closed.
+
+### Pull Requests Merged
+
+* [PR 53](https://github.com/python-lsp/python-lsp-black/pull/53) - Drop support for Python 3.7, by [@ccordoba12](https://github.com/ccordoba12)
+* [PR 52](https://github.com/python-lsp/python-lsp-black/pull/52) - Use new `lines` option in Black 23.11 to format range, by [@remisalmon](https://github.com/remisalmon) ([42](https://github.com/python-lsp/python-lsp-black/issues/42))
+* [PR 49](https://github.com/python-lsp/python-lsp-black/pull/49) - Read skip options from plugin settings, by [@seruman](https://github.com/seruman)
+* [PR 39](https://github.com/python-lsp/python-lsp-black/pull/39) - Change entrypoint name to simply be `black`, by [@chantera](https://github.com/chantera) ([41](https://github.com/python-lsp/python-lsp-black/issues/41))
+
+In this release 4 pull requests were closed.
+
 ## Version 1.3.0 (2023/05/19)
 
 ### Issues Closed
