@@ -281,7 +281,14 @@ def test_load_config_defaults(config):
 
     assert config == {
         "line_length": 88,
-        "target_version": set(),
+        "target_version": set(
+            [
+                black.TargetVersion.PY38,
+                black.TargetVersion.PY39,
+                black.TargetVersion.PY310,
+                black.TargetVersion.PY311,
+            ]
+        ),
         "pyi": False,
         "fast": False,
         "skip_magic_trailing_comma": False,
@@ -297,7 +304,14 @@ def test_load_config_with_skip_options(config_with_skip_options):
 
     assert config == {
         "line_length": 88,
-        "target_version": set(),
+        "target_version": set(
+            [
+                black.TargetVersion.PY38,
+                black.TargetVersion.PY39,
+                black.TargetVersion.PY310,
+                black.TargetVersion.PY311,
+            ]
+        ),
         "pyi": False,
         "fast": False,
         "skip_magic_trailing_comma": True,
