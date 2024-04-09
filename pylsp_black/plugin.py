@@ -127,7 +127,7 @@ def format_text(*, text, config, lines):
         IndentationError,
         # raised when black produces invalid Python code or formats the file
         # differently on the second pass
-        AssertionError,
+        black.parsing.ASTSafetyError,
     ) as e:
         # errors will show on lsp stderr stream
         logger.error("Error formatting with black: %s", e)
