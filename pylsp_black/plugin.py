@@ -34,8 +34,9 @@ else:
 
 
 @hookimpl(tryfirst=True)
-def pylsp_format_document(config, document):
-    return format_document(config, document)
+def pylsp_format_document(config, workspace, document):
+    with workspace.report_progress("format: black"):
+        return format_document(config, document)
 
 
 @hookimpl(tryfirst=True)
