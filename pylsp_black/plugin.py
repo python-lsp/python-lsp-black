@@ -40,11 +40,12 @@ def pylsp_format_document(config, workspace, document):
 
 
 @hookimpl(tryfirst=True)
-def pylsp_format_range(config, document, range):
+def pylsp_format_range(config, workspace, document, range):
     range["start"]["character"] = 0
     range["end"]["line"] += 1
     range["end"]["character"] = 0
-    return format_document(config, document, range)
+    with workspace.report_progress("format: black"):
+        return format_document(config, document, range)
 
 
 @hookimpl
